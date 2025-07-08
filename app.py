@@ -261,3 +261,4 @@ else:
 
                 except Exception as e:
                     st.error(f"An error occurred: {{e}}")
+                    st.exception(e)
