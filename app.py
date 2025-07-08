@@ -25,19 +25,12 @@ def get_base64_of_bin_file(bin_file):
 
 # --- Load Custom CSS for Star Wars Theme ---
 def load_css():
-    background_image_path = "background.png"
-    encoded_image = get_base64_of_bin_file(background_image_path)
-    if encoded_image:
-        background_style = f"background-image: url(data:image/png;base64,{encoded_image});"
-    else:
-        background_style = "background-color: #000;"
-
     st.markdown(f"""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@300;600;800&display=swap');
 
     .stApp {{
-        {background_style}
+        background-color: #000;
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
@@ -68,26 +61,37 @@ def load_css():
     /* Main container styling */
     .main .block-container {{
         background-color: rgba(0, 0, 0, 0.85);
-        border: 2px solid #feda4a;
-        box-shadow: 0 0 30px 10px #feda4a;
+        border: 2px solid #FFD700;
+        box-shadow: 0 0 30px 10px #FFD700;
         padding: 2rem;
         border-radius: 10px;
         text-align: center;
     }}
 
     /* Typography */
-    h1, h2, h3, p, label, .st-emotion-cache-16txtl3 {{
+    h1 {{
         font-family: 'Orbitron', sans-serif;
-        color: #feda4a;
+        color: #FFD700;
+        text-shadow: 0 0 5px #000, 0 0 10px #000;
+        font-weight: 800; /* Extra Bold */
+        margin-top: 24px; /* Top padding */
+    }}
+    h2 {{
+        font-family: 'Orbitron', sans-serif;
+        color: #FFD700; /* Changed from #fff for consistency */
+        text-shadow: 0 0 5px #000, 0 0 10px #000;
+        font-weight: 400; /* Normal */
+    }}
+    h3, p, label, .st-emotion-cache-16txtl3 {{
+        font-family: 'Orbitron', sans-serif;
+        color: #FFD700; /* Changed from #feda4a for contrast */
         text-shadow: 0 0 5px #000, 0 0 10px #000;
     }}
-    h1 {{ text-transform: uppercase; }}
-    h2 {{ color: #fff; }}
 
     /* Buttons */
     .stButton>button {{
-        border: 2px solid #feda4a;
-        background-color: #feda4a;
+        border: 2px solid #FFD700;
+        background-color: #FFD700;
         color: #000;
         padding: 10px 24px;
         border-radius: 5px;
@@ -97,7 +101,7 @@ def load_css():
     }}
     .stButton>button:hover {{
         background-color: #000;
-        color: #feda4a;
+        color: #FFD700;
     }}
 
     /* Intro text */
@@ -107,6 +111,13 @@ def load_css():
         text-align: center;
         transform: perspective(300px) rotateX(15deg);
         margin-bottom: 2em;
+        font-weight: 300; /* Light */
+        font-style: italic;
+    }}
+
+    /* st.info alignment */
+    .st-emotion-cache-1c7y2kd {{
+        text-align: center;
     }}
 
     /* Optional: Animated starfield background (commented out)
@@ -134,15 +145,20 @@ def load_css():
 # --- Language Content ---
 content = {
     "ru": {
-        "title": "Алишер & Ботагоз",
-        "intro": "Давным-давно, в далекой-далекой галактике...",
-        "header": "Приглашение на Свадьбу",
-        "alliance": "С великой радостью приглашаем вас присоединиться к нашему альянсу!",
-        "date": "06.09.2025",
+        "title": "Приглашение на свадьбу",
+        "intro": """Когда две звезды пересекаются на орбите судьбы —
+рождается новый мир.
+Мир, в котором сила — это любовь,
+а путь один — вместе.""",
+        "header": "С большой радостью",
+        "alliance": """Ботагоз и Алишер
+приглашают вас разделить с ними день,
+в который их вселенные станут одним целым.""",
+        "date": "6 сентября 2025 года",
         "time": "17:00",
-        "address_intro": "Наша сага продолжится по адресу:",
-        "address_placeholder": "Portofino. Проспект Туран, 27",
-        "rsvp_intro": "Подтвердите свое присутствие до 20.08.2025",
+        "address_intro": "Ресторан Portofino, Астана. Проспект Туран, 27",
+        "address_placeholder": "Дресс-код: торжественный, с лёгким сиянием ✨",
+        "rsvp_intro": "Подтвердите свое присудствие до 20 августа",
         "form_name": "Ваше имя (Имена гостей)",
         "form_attendance": "Подтверждаете присутствие?",
         "option_yes": "Да, я присоединюсь к Альянсу",
@@ -154,18 +170,24 @@ content = {
         "days": "дней",
         "hours": "часов",
         "minutes": "минут",
-        "wedding_started": "Свадьба началась!"
+        "wedding_started": "Свадьба началась!",
+        "final_message": "Да пребудет с вами… праздник."
     },
     "kz": {
-        "title": "Әлішер & Ботагоз",
-        "intro": "Ерте, ерте заманда, алыс-алыс галактикада...",
-        "header": "Үйлену тойына шақыру",
-        "alliance": "Сіздерді біздің одағымыздың құрылу салтанатына шақырамыз!",
-        "date": "06.09.2025",
+        "title": "Үйлену тойына шақыру",
+        "intro": """Екі жұлдыз тағдыр орбитасында тоғысқанда —
+жаңа әлем дүниеге келеді.
+Күш — махаббат,
+ал жол біреу — бірге.""",
+        "header": "Үлкен қуанышпен",
+        "alliance": """Ботагөз бен Әлішер
+сіздерді өздерінің ғаламдары біртұтас болатын күнді
+бірге өткізуге шақырады.""",
+        "date": "2025 жылғы 6 қыркүйек",
         "time": "17:00",
-        "address_intro": "Біздің дастанымыз мына мекен-жайда жалғасады:",
-        "address_placeholder": "Portofino. Туран Даңғылы, 27",
-        "rsvp_intro": "Қатысуыңызды 20.08.2025 дейін растаңыз",
+        "address_intro": "Portofino мейрамханасы, Астана. Тұран даңғылы, 27",
+        "address_placeholder": "Дресс-код: салтанатты, жеңіл жарқыраған ✨",
+        "rsvp_intro": "Қатысуыңызды 20 тамызға дейін растаңыз",
         "form_name": "Сіздің есіміңіз (Қонақтардың есімдері)",
         "form_attendance": "Қатысуды растайсыз ба?",
         "option_yes": "Иә, мен Альянсқа қосыламын",
@@ -177,7 +199,8 @@ content = {
         "days": "күн",
         "hours": "сағат",
         "minutes": "минут",
-        "wedding_started": "Той басталды!"
+        "wedding_started": "Той басталды!",
+        "final_message": "Сізбен бірге... мереке болсын."
     }
 }
 
@@ -207,20 +230,21 @@ lang = "ru" if lang_choice == "Русский" else "kz"
 t = content[lang]
 
 # --- Display Invitation Details ---
-st.title(t["title"])
-st.header(t["header"])
+st.header(t["title"])
+st.subheader(t["header"])
 st.markdown(f'<p class="intro-text">{t["intro"]}</p>', unsafe_allow_html=True)
 st.write(t["alliance"])
 st.subheader(f'{t["date"]} | {t["time"]}')
 st.write("") # Spacer
 st.write(t["address_intro"])
-st.info(t["address_placeholder"])
+st.write(t["address_placeholder"])
 st.write("") # Spacer
 
-# --- Countdown ---
 st.subheader(t["countdown_text"])
 st.write(get_countdown(wedding_date, t))
 st.write("") # Spacer
+
+st.subheader(t["final_message"])
 
 # --- RSVP Form ---
 st.header(t["rsvp_intro"])
