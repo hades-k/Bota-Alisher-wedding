@@ -47,9 +47,9 @@ def load_css():
     }}
     /* Main container styling */
     .main .block-container {{
-        background-color: rgba(0, 0, 0, 0.8);
+        background-color: rgba(0, 0, 0, 0.85);
         border: 2px solid #feda4a;
-        box-shadow: 0 0 20px #feda4a;
+        box-shadow: 0 0 30px 10px #feda4a;
         padding: 2rem;
         border-radius: 10px;
         text-align: center;
@@ -88,7 +88,7 @@ def load_css():
 # --- Language Content ---
 content = {
     "ru": {
-        "title": "Ботагоз & Алишер",
+        "title": "Алишер & Ботагоз",
         "intro": "Давным-давно, в далекой-далекой галактике...",
         "header": "Приглашение на Свадьбу",
         "alliance": "С великой радостью приглашаем вас присоединиться к нашему альянсу!",
@@ -111,7 +111,7 @@ content = {
         "wedding_started": "Свадьба началась!"
     },
     "kz": {
-        "title": "Ботагөз & Әлішер",
+        "title": "Әлішер & Ботагоз",
         "intro": "Ерте, ерте заманда, алыс-алыс галактикада...",
         "header": "Үйлену тойына шақыру",
         "alliance": "Сіздерді біздің одағымыздың құрылу салтанатына шақырамыз!",
