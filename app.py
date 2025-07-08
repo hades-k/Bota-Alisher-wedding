@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import os
 import base64
+import datetime
 
 # --- Page Configuration ---
 st.set_page_config(
@@ -56,6 +57,7 @@ def load_css():
     h1, h2, h3, p, label, .st-emotion-cache-16txtl3 {{
         font-family: 'Orbitron', sans-serif;
         color: #feda4a;
+        text-shadow: 0 0 5px #000, 0 0 10px #000;
     }}
     h1 {{ text-transform: uppercase; }}
     h2 {{ color: #fff; }}
@@ -101,7 +103,12 @@ content = {
         "option_no": "Нет, я на стороне Империи",
         "submit_button": "Отправить ответ",
         "thank_you": "Спасибо! Ваш ответ записан в голокрон.",
-        "error_name": "Пожалуйста, введите ваше имя, юный падаван."
+        "error_name": "Пожалуйста, введите ваше имя, юный падаван.",
+        "countdown_text": "До нашей свадьбы осталось:",
+        "days": "дней",
+        "hours": "часов",
+        "minutes": "минут",
+        "wedding_started": "Свадьба началась!"
     },
     "kz": {
         "title": "Ботагөз & Әлішер",
@@ -119,12 +126,33 @@ content = {
         "option_no": "Жоқ, мен Империя жағындамын",
         "submit_button": "Жауапты жіберу",
         "thank_you": "Рахмет! Сіздің жауабыңыз голокронға жазылды.",
-        "error_name": "Есіміңізді енгізіңіз, жас падаван."
+        "error_name": "Есіміңізді енгізіңіз, жас падаван.",
+        "countdown_text": "Тойымызға қалды:",
+        "days": "күн",
+        "hours": "сағат",
+        "minutes": "минут",
+        "wedding_started": "Той басталды!"
     }
 }
 
 # --- Main App Logic ---
 load_css()
+
+# Wedding Date for Countdown
+wedding_date = datetime.datetime(2025, 9, 6, 17, 0)
+
+def get_countdown(wedding_date, lang_content):
+    now = datetime.datetime.now()
+    time_left = wedding_date - now
+
+    if time_left.total_seconds() < 0:
+        return lang_content["wedding_started"]
+    else:
+        days = time_left.days
+        hours = time_left.seconds // 3600
+        minutes = (time_left.seconds % 3600) // 60
+        seconds = time_left.seconds % 60
+        return f"{days} {lang_content["days"]}, {hours} {lang_content["hours"]}, {minutes} {lang_content["minutes"]}"
 
 # Language Selection
 lang_choice = st.sidebar.radio("Language / Тіл", ["Русский", "Қазақ"], label_visibility="collapsed")
@@ -143,22 +171,26 @@ st.write(t["address_intro"])
 st.info(t["address_placeholder"])
 st.write("") # Spacer
 
+# --- Countdown ---
+st.subheader(t["countdown_text"])
+st.write(get_countdown(wedding_date, t))
+st.write("") # Spacer
+
 # --- RSVP Form ---
 st.header(t["rsvp_intro"])
 
-# Use session state to check if the form has already been submitted
 if 'form_submitted' not in st.session_state:
     st.session_state.form_submitted = False
 
-# If form has been submitted, show thank you message. Otherwise, show the form.
 if st.session_state.form_submitted:
     st.success(t["thank_you"])
 else:
-    with st.form(key="rsvp_form"):
+    with st.form(key='rsvp_form'):
         guest_name = st.text_input(label=t["form_name"])
         attendance = st.radio(
             label=t["form_attendance"],
-            options=[t["option_yes"], t["option_no"]]
+            options=[t["option_yes"], t["option_no"]],
+            index=0
         )
         submitted = st.form_submit_button(label=t["submit_button"])
 
@@ -166,19 +198,18 @@ else:
             if not guest_name.strip():
                 st.error(t["error_name"])
             else:
-                # Record the submission
-                response_data = pd.DataFrame([{
-                    "Name": guest_name.strip(),
-                    "Attendance": attendance,
-                    "Timestamp": datetime.datetime.now()
-                }])
-                
-                # Save to CSV
-                if not os.path.exists(RSVP_FILE):
-                    response_data.to_csv(RSVP_FILE, index=False, header=True)
-                else:
-                    response_data.to_csv(RSVP_FILE, mode='a', header=False, index=False)
-                
-                # Set state to show thank you message on rerun
-                st.session_state.form_submitted = True
-                st.rerun()
+                try:
+                    response_data = pd.DataFrame([{{
+                        "Name": guest_name.strip(),
+                        "Attendance": attendance,
+                        "Timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    }}])
+
+                    file_exists = os.path.exists(RSVP_FILE)
+                    response_data.to_csv(RSVP_FILE, mode='a', header=not file_exists, index=False)
+                    
+                    st.session_state.form_submitted = True
+                    st.rerun()
+
+                except Exception as e:
+                    st.error(f"An error occurred: {{e}}")
