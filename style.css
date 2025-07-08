@@ -1,61 +1,115 @@
 body {
-    font-family: 'Georgia', serif;
-    background-color: #fdfdfd;
-    color: #333;
+    font-family: 'Orbitron', sans-serif;
+    background-color: #000;
+    color: #feda4a; /* Star Wars Gold */
+    margin: 0;
+    padding: 0;
+    background-image: url('background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
+    min-height: 100vh;
 }
 
-.invitation {
-    text-align: center;
-    border: 1px solid #eee;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-    background-color: #fff;
+.language-switcher {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
 }
 
-.header h1 {
-    font-size: 3em;
-    color: #d4af37;
-    margin: 0;
-}
-
-.header p {
-    font-size: 1.2em;
-    margin-top: 10px;
-}
-
-.date h2 {
-    font-size: 2.5em;
-    color: #d4af37;
-    margin: 10px 0;
-}
-
-.rsvp button {
-    background-color: #d4af37;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    margin: 5px;
-    border-radius: 5px;
+.language-switcher button {
+    background: none;
+    border: 1px solid #feda4a;
+    color: #feda4a;
+    padding: 5px 10px;
     cursor: pointer;
-    font-size: 1em;
+    font-family: 'Orbitron', sans-serif;
 }
 
-.rsvp button:hover {
-    background-color: #c09e26;
+.language-switcher button.active {
+    background: #feda4a;
+    color: #000;
 }
 
-.hidden {
-    display: none;
+.invitation-container {
+    position: relative;
+    text-align: center;
+    max-width: 600px;
+    width: 90%;
+    padding: 40px;
+    border: 2px solid #feda4a;
+    background: rgba(0, 0, 0, 0.75);
+    box-shadow: 0 0 30px #feda4a;
 }
 
-#confirmation p {
-    font-size: 1.1em;
-    color: #333;
+.fade-overlay {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent, #000 95%);
+    pointer-events: none; /* Allows clicking through the overlay */
+}
+
+.invitation-content {
+    position: relative;
+    z-index: 2;
+}
+
+.intro-text {
+    font-size: 1.2em;
+    line-height: 1.6;
+    text-align: justify;
+    transform: perspective(300px) rotateX(25deg);
+    margin-bottom: 2em;
+}
+
+.couple-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid #feda4a;
+    object-fit: cover;
+    margin-bottom: 1em;
+}
+
+h1 {
+    font-size: 3em;
+    margin: 0.2em 0;
+    text-transform: uppercase;
+}
+
+h2 {
+    font-size: 2.5em;
+    margin: 0.5em 0;
+    color: #fff;
+}
+
+.address {
+    font-style: italic;
+    color: #ccc;
+}
+
+.rsvp-button {
+    display: inline-block;
+    background-color: #feda4a;
+    color: #000;
+    padding: 15px 30px;
+    text-decoration: none;
+    font-size: 1.2em;
+    border-radius: 5px;
     margin-top: 20px;
+    transition: background-color 0.3s, transform 0.3s;
+    text-transform: uppercase;
+}
+
+.rsvp-button:hover {
+    background-color: #fff;
+    transform: scale(1.05);
 }

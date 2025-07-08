@@ -1,17 +1,27 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const yesBtn = document.getElementById('yes-btn');
-    const noBtn = document.getElementById('no-btn');
-    const confirmation = document.getElementById('confirmation');
+    const ruBtn = document.getElementById('lang-ru');
+    const kzBtn = document.getElementById('lang-kz');
 
-    yesBtn.addEventListener('click', function() {
-        confirmation.classList.remove('hidden');
-        yesBtn.style.display = 'none';
-        noBtn.style.display = 'none';
-    });
+    const ruElements = document.querySelectorAll('.ru');
+    const kzElements = document.querySelectorAll('.kz');
 
-    noBtn.addEventListener('click', function() {
-        confirmation.classList.remove('hidden');
-        yesBtn.style.display = 'none';
-        noBtn.style.display = 'none';
-    });
+    function setLanguage(lang) {
+        if (lang === 'ru') {
+            ruElements.forEach(el => el.style.display = 'block');
+            kzElements.forEach(el => el.style.display = 'none');
+            ruBtn.classList.add('active');
+            kzBtn.classList.remove('active');
+        } else {
+            ruElements.forEach(el => el.style.display = 'none');
+            kzElements.forEach(el => el.style.display = 'block');
+            kzBtn.classList.add('active');
+            ruBtn.classList.remove('active');
+        }
+    }
+
+    ruBtn.addEventListener('click', () => setLanguage('ru'));
+    kzBtn.addEventListener('click', () => setLanguage('kz'));
+
+    // Set initial language
+    setLanguage('ru');
 });
