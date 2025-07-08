@@ -219,7 +219,7 @@ def get_countdown(wedding_date, lang_content):
 lang_choice = st.sidebar.radio("Language / Тіл", ["Русский", "Қазақ"], label_visibility="collapsed")
 lang = "ru" if lang_choice == "Русский" else "kz"
 
-t = content[lang
+t = content[lang]
 
 st.markdown("""
 <style>
