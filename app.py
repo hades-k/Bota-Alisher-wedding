@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import os
-import base64
 import datetime
 
 # --- Page Configuration ---
@@ -14,78 +13,83 @@ st.set_page_config(
 # --- File for RSVPs ---
 RSVP_FILE = "rsvps.csv"
 
-# --- Function to get base64 encoded image for CSS ---
-def get_base64_of_bin_file(bin_file):
-    try:
-        with open(bin_file, 'rb') as f:
-            data = f.read()
-        return base64.b64encode(data).decode()
-    except FileNotFoundError:
-        return None
-
-# --- Load Custom CSS for Star Wars Theme ---
+# --- Load Custom CSS ---
 def load_css():
-    background_image_path = "background.png"
-    encoded_image = get_base64_of_bin_file(background_image_path)
-    if encoded_image:
-        background_style = f"background-image: url(data:image/png;base64,{encoded_image});"
-    else:
-        background_style = "background-color: #000;"
-
-    st.markdown(f"""
+    st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+    /* Base reset for Streamlit app */
+    .stApp {
+      font-family: 'Georgia', serif;
+      color: #f5f0e1;
+      background: #000; /* Fallback for browsers that don't support the gradient */
+      overflow: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
 
-    .stApp {{
-        {background_style}
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        position: relative;
-        overflow: hidden;
-    }}
+    /* Background Layer - applied to injected div */
+    .background-layer {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(to bottom, #0a0f1c, #000000);
+      z-index: -3; /* Ensure it's behind Streamlit content */
+    }
 
-    /* Dark overlay to improve readability */
-    .stApp::before {{
-        content: "";
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.4);
-        z-index: 0;
-    }}
-    .stApp > * {{
-        position: relative;
-        z-index: 1;
-    }}
+    /* Subtle golden stars - applied to injected div */
+    .stars-layer {
+      position: fixed; /* Use fixed to cover the whole viewport */
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(#bfa76f 1px, transparent 1px);
+      background-size: 3px 3px;
+      opacity: 0.1;
+      animation: twinkle 8s infinite ease-in-out;
+      z-index: -2; /* Behind content, above background-layer */
+    }
 
+    /* Light golden aura - applied to injected div */
+    .aura-layer {
+      position: fixed; /* Use fixed to cover the whole viewport */
+      top: -10%;
+      left: -10%;
+      width: 120%;
+      height: 120%;
+      background: radial-gradient(ellipse at center, rgba(191, 167, 111, 0.1), transparent 70%);
+      z-index: -2; /* Same as stars, or adjust as needed */
+    }
 
-    .stApp > header {{ 
-        background-color: transparent; 
-    }}
+    /* Optional dark overlay for better contrast - applied to injected div */
+    .overlay-layer {
+      position: fixed; /* Use fixed to cover the whole viewport */
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: -1; /* Behind content, above other layers */
+    }
 
-    /* Main container styling */
-    .main .block-container {{
-        background-color: rgba(0, 0, 0, 0.85);
+    /* Streamlit specific adjustments */
+    .main .block-container {
+        background-color: rgba(0, 0, 0, 0.85); /* Keep existing dark container */
         border: 2px solid #feda4a;
         box-shadow: 0 0 30px 10px #feda4a;
         padding: 2rem;
         border-radius: 10px;
         text-align: center;
-    }}
+        z-index: 1; /* Ensure Streamlit content is above background layers */
+        position: relative; /* Needed for z-index to work */
+    }
 
     /* Typography */
-    h1, h2, h3, p, label, .st-emotion-cache-16txtl3 {{
-        font-family: 'Orbitron', sans-serif;
-        color: #feda4a;
+    h1, h2, h3, p, label, .st-emotion-cache-16txtl3 {
+        font-family: 'Orbitron', sans-serif; /* Keep existing font */
+        color: #feda4a; /* Keep existing color */
         text-shadow: 0 0 5px #000, 0 0 10px #000;
-    }}
-    h1 {{ text-transform: uppercase; }}
-    h2 {{ color: #fff; }}
+    }
+    h1 { text-transform: uppercase; }
+    h2 { color: #fff; }
 
     /* Buttons */
-    .stButton>button {{
+    .stButton>button {
         border: 2px solid #feda4a;
         background-color: #feda4a;
         color: #000;
@@ -94,41 +98,49 @@ def load_css():
         font-weight: bold;
         text-transform: uppercase;
         width: 100%;
-    }}
-    .stButton>button:hover {{
+    }
+    .stButton>button:hover {
         background-color: #000;
         color: #feda4a;
-    }}
+    }
 
     /* Intro text */
-    .intro-text {{
+    .intro-text {
         font-size: 1.2em;
         line-height: 1.6;
         text-align: center;
         transform: perspective(300px) rotateX(15deg);
         margin-bottom: 2em;
-    }}
+    }
 
-    /* Optional: Animated starfield background (commented out)
-    .stApp::after {{
-        content: "";
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%;
-        height: 100%;
-        background: url('https://raw.githubusercontent.com/Julian-Nash/starfield-animation/main/starfield-bg.gif') repeat;
-        background-size: cover;
-        opacity: 0.08;
-        z-index: -2;
-        animation: drift 60s linear infinite;
-    }}
-    @keyframes drift {{
-        from {{ background-position: 0 0; }}
-        to {{ background-position: 10000px 0; }}
-    }}
-    */
+    /* Animations */
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.1; }
+      50% { opacity: 0.2; }
+    }
 
+    /* Mobile-friendly */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      button {
+        font-size: 0.9rem;
+      }
+    }
     </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+        <div class="background-layer"></div>
+        <div class="stars-layer"></div>
+        <div class="aura-layer"></div>
+        <div class="overlay-layer"></div>
     """, unsafe_allow_html=True)
 
 # --- Language Content ---
