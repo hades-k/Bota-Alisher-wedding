@@ -245,11 +245,11 @@ else:
                 st.error(t["error_name"])
             else:
                 try:
-                    response_data = pd.DataFrame([{{
+                    response_data = pd.DataFrame.from_records([{
                         "Name": guest_name.strip(),
                         "Attendance": attendance,
                         "Timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    }}])
+                    }])
 
                     if not os.path.exists(RSVP_FILE):
                         # Create the file with headers if it doesn't exist
@@ -260,5 +260,6 @@ else:
                     st.rerun()
 
                 except Exception as e:
-                    st.error(f"An error occurred: {{e}}")
-                    st.exception(e)
+                    st.error(f"An error occurred: {e}")
+
+
