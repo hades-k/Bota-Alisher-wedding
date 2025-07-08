@@ -251,8 +251,10 @@ else:
                         "Timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     }}])
 
-                    file_exists = os.path.exists(RSVP_FILE)
-                    response_data.to_csv(RSVP_FILE, mode='a', header=not file_exists, index=False)
+                    if not os.path.exists(RSVP_FILE):
+                        # Create the file with headers if it doesn't exist
+                        pd.DataFrame(columns=["Name", "Attendance", "Timestamp"]).to_csv(RSVP_FILE, index=False)
+                    response_data.to_csv(RSVP_FILE, mode='a', header=False, index=False)
                     
                     st.session_state.form_submitted = True
                     st.rerun()
