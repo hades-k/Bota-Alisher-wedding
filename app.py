@@ -28,49 +28,68 @@ def load_css():
     encoded_image = get_base64_of_bin_file("background.png")
     st.markdown(f"""
     <style>
+    /* Background and layout */
     .stApp {{
-    background-image: url("data:image/png;base64,{encoded_image}");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    position: relative;
-    overflow: hidden;
+        background-image: url("data:image/png;base64,{encoded_image}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        position: relative;
+        overflow: hidden;
+        font-family: 'Inter', sans-serif;
     }}
-
+    
     .stApp > * {{
         position: relative;
         z-index: 1;
     }}
-    
+
     .stApp > header {{ 
         background-color: transparent; 
     }}
 
-    /* Main container styling */
+    /* Main content block */
     .main .block-container {{
         background-color: rgba(0, 0, 0, 0.85);
         border: 2px solid #FFD700;
         box-shadow: 0 0 30px 10px #FFD700;
         padding: 2rem;
-        border-radius: 10px;
+        border-radius: 16px;
         text-align: center;
     }}
 
     /* Typography */
     h1 {{
         color: #FFD700;
-        text-shadow: 0 0 5px #000, 0 0 10px #000;
-        font-weight: 800; /* Extra Bold */
-        margin-top: 24px; /* Top padding */
+        text-shadow: 0 0 8px #000, 0 0 16px #000;
+        font-weight: 800;
+        font-size: 2.5em;
+        margin-top: 24px;
+        letter-spacing: 0.05em;
     }}
+
     h2 {{
-        color: #FFD700; /* Changed from #fff for consistency */
+        color: #FFD700;
         text-shadow: 0 0 5px #000, 0 0 10px #000;
-        font-weight: 400; /* Normal */
+        font-weight: 500;
+        font-size: 1.75em;
     }}
-    h3, p, label, .st-emotion-cache-16txtl3 {{
-        color: #FFD700; /* Changed from #feda4a for contrast */
+
+    h3, label, .st-emotion-cache-16txtl3 {{
+        color: #FFD700;
         text-shadow: 0 0 5px #000, 0 0 10px #000;
+        font-size: 1.1em;
+    }}
+
+    /* Markdown text */
+    .main .block-container p {{
+        color: #FFD700;
+        text-shadow: 0 0 5px #000, 0 0 10px #000;
+        font-size: 1.3em; /* Increased font size for basic markdown text */
+    }}
+    p {{
+        color: #FFD700;
+        font-size: 1.2em !important;
     }}
 
     /* Buttons */
@@ -78,32 +97,54 @@ def load_css():
         border: 2px solid #FFD700;
         background-color: #FFD700;
         color: #000;
-        padding: 10px 24px;
-        border-radius: 5px;
+        padding: 12px 24px;
+        border-radius: 6px;
         font-weight: bold;
         text-transform: uppercase;
+        transition: all 0.3s ease;
         width: 100%;
+        box-shadow: 0 0 10px #FFD700;
     }}
+
     .stButton>button:hover {{
         background-color: #000;
         color: #FFD700;
+        box-shadow: 0 0 20px #FFD700;
     }}
 
-    /* st.info alignment */
+    /* Centering Streamlit info blocks */
     .st-emotion-cache-1c7y2kd {{
         text-align: center;
     }}
-    
+
+    /* Radio button labels */
+    .stRadio label {{
+        color: #FFD700 !important;
+        font-weight: bold;
+        text-shadow: 0 0 4px #000;
+    }}
+
+    /* Input fields */
+    .stTextInput>div>div>input {{
+        background-color: rgba(255, 255, 255, 0.05);
+        color: #FFD700;
+        border: 1px solid #FFD700;
+        border-radius: 5px;
+    }}
+
+    .stTextInput>div>div>input::placeholder {{
+        color: #ccc;
+    }}
     </style>
-    
     """, unsafe_allow_html=True)
+
 
 # --- Language Content ---
 content = {
     "ru": {
         "title": "Приглашение на свадьбу",
         "intro1": 'Когда две звезды пересекаются на орбите судьбы - рождается новый мир.',
-        'intro2': 'Мир, в котором сила - это любовь, а путь один - вместе',
+        'intro2': '💫Мир, в котором сила - это любовь, а путь один - вместе💫',
         "header": "Ботагоз и Алишер",
         "alliance": '''приглашают вас разделить с ними день,
 в который их вселенные станут одним целым.''',
@@ -130,7 +171,7 @@ content = {
     "kz": {
         "title": "Үйлену тойына шақыру",
         "intro1": 'Екі жұлдыз тағдыр орбитасында тоғысқанда - жаңа әлем дүниеге келеді.',
-        'intro2': 'Күш - махаббат, ал жол біреу - бірге.''',
+        'intro2': '💫Күш - махаббат, ал жол біреу - бірге.💫',
         "header": "Ботагоз бен Алишер",
         "alliance": '''сіздерді өздерінің ғаламдары біртұтас болатын күнді
 бірге өткізуге шақырады.''',
@@ -181,30 +222,31 @@ lang = "ru" if lang_choice == "Русский" else "kz"
 t = content[lang]
 
 # --- Display Invitation Details ---
+
 st.header(t["title"])
-st.markdown(t['intro1'])
+st.markdown(f"**{t['intro1']}**")
 st.markdown(t['intro2'])
+
 st.subheader(t["header"])
-st.write(t["alliance"])
-st.write ('')
-st.subheader(f'{t["date"]} | {t["time"]}')
-st.write('')# Spacer
-st.write(t["address_intro"])
-st.write(t["address_placeholder"])
-st.write("") # Spacer
+st.markdown(f"**{t['alliance']}**")
 
+st.write("")  # Spacer
+st.info(f"📅 **{t['date']} | {t['time']}**")
+st.success(f"📍 {t['address_intro']}\n\n{t['address_placeholder']}")
 
+st.write("")  # Spacer
+st.markdown("---")
 
 # --- RSVP Form ---
 st.header(t["rsvp_intro"])
 
-if 'form_submitted' not in st.session_state:
+if "form_submitted" not in st.session_state:
     st.session_state.form_submitted = False
 
 if st.session_state.form_submitted:
     st.success(t["thank_you"])
 else:
-    with st.form(key='rsvp_form'):
+    with st.form(key="rsvp_form"):
         guest_name = st.text_input(label=t["form_name"])
         attendance = st.radio(
             label=t["form_attendance"],
@@ -218,26 +260,83 @@ else:
                 st.error(t["error_name"])
             else:
                 try:
-                    response_data = pd.DataFrame([{{
+                    response_data = pd.DataFrame([{
                         "Name": guest_name.strip(),
                         "Attendance": attendance,
                         "Timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    }}])
+                    }])
 
                     if not os.path.exists(RSVP_FILE):
-                        # Create the file with headers if it doesn't exist
                         pd.DataFrame(columns=["Name", "Attendance", "Timestamp"]).to_csv(RSVP_FILE, index=False)
-                    response_data.to_csv(RSVP_FILE, mode='a', header=False, index=False)
-                    
+
+                    response_data.to_csv(RSVP_FILE, mode="a", header=False, index=False)
+
                     st.session_state.form_submitted = True
                     st.rerun()
 
                 except Exception as e:
-                    st.error(f"An error occurred: {{e}}")
+                    st.error(f"Произошла ошибка: {e}")
                     st.exception(e)
 
-st.subheader(t["countdown_text"])
-st.write(get_countdown(wedding_date, t))
-st.write("") # Spacer
+# --- Countdown & Final Message ---
+st.write("")
+st.subheader(f"⏳ {t['countdown_text']}")
+st.markdown(f"<h2 style='color:#FFD700'>{get_countdown(wedding_date, t)}</h2>", unsafe_allow_html=True)
+st.write("")
+st.markdown(f"<h3 style='color:#FFD700'>{t['final_message']}</h3>", unsafe_allow_html=True)
 
-st.subheader(t["final_message"])
+st.markdown("""
+<style>
+.glimmer-stars {
+  pointer-events: none;
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: 9999;
+  overflow: hidden;
+}
+.glimmer-stars span {
+  position: absolute;
+  font-size: 10px;
+  color: #FFD700;
+  opacity: 0.6;
+  animation: glimmer 2.5s infinite;
+  text-shadow: 0 0 8px #FFD700, 0 0 16px #fff;
+}
+/* Corners */
+.glimmer-stars span:nth-child(1) { left: 22vw; top: 2vh; animation-delay: 0s; }
+.glimmer-stars span:nth-child(2) { left: 97vw; top: 5vh; animation-delay: 0.5s; }
+.glimmer-stars span:nth-child(3) { left: 2vw; top: 97vh; animation-delay: 1s; }
+.glimmer-stars span:nth-child(4) { left: 97vw; top: 97vh; animation-delay: 1.5s; }
+/* Top and bottom edges */
+.glimmer-stars span:nth-child(7) { left: 60vw; top: 8vh; animation-delay: 1.2s; }
+.glimmer-stars span:nth-child(8) { left: 80vw; top: 3vh; animation-delay: 1.7s; }
+.glimmer-stars span:nth-child(11) { left: 60vw; top: 98vh; animation-delay: 1.4s; }
+.glimmer-stars span:nth-child(12) { left: 80vw; top: 98vh; animation-delay: 1.9s; }
+/* Left and right edges */
+.glimmer-stars span:nth-child(13) { left: 24vw; top: 20vh; animation-delay: 0.3s; }
+.glimmer-stars span:nth-child(14) { left: 20vw; top: 40vh; animation-delay: 0.8s; }
+.glimmer-stars span:nth-child(15) { left: 30vw; top: 60vh; animation-delay: 1.3s; }
+.glimmer-stars span:nth-child(17) { left: 85vw; top: 20vh; animation-delay: 0.6s; }
+.glimmer-stars span:nth-child(18) { left: 88vw; top: 40vh; animation-delay: 1.1s; }
+.glimmer-stars span:nth-child(20) { left: 93vw; top: 80vh; animation-delay: 2.1s; }
+
+@keyframes glimmer {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+</style>
+<div class="glimmer-stars">
+  <span>★</span><span>★</span><span>★</span><span>★</span>
+  <span>★</span><span>★</span><span>★</span><span>★</span>
+  <span>★</span><span>★</span><span>★</span><span>★</span>
+  <span>★</span><span>★</span><span>★</span><span>★</span>
+  <span>★</span><span>★</span><span>★</span><span>★</span>
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown(
+    "<div style='text-align:center; color:#FFD700; margin-top:2em;'>"
+    "С любовью, Бота & Алишер 💛<br>May the Force be with you!"
+    "</div>",
+    unsafe_allow_html=True
+)
