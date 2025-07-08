@@ -27,19 +27,17 @@ def get_base64_of_bin_file(bin_file):
 def load_css():
     st.markdown(f"""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@300;600;800&display=swap');
-
-    .stApp {{
+    .stApp {
         background-color: #000;
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
         position: relative;
         overflow: hidden;
-    }}
+    }
 
     /* Dark overlay to improve readability */
-    .stApp::before {{
+    .stApp::before {
         content: "";
         position: absolute;
         top: 0; left: 0;
@@ -47,49 +45,46 @@ def load_css():
         height: 100%;
         background: rgba(0, 0, 0, 0.4);
         z-index: 0;
-    }}
-    .stApp > * {{
+    }
+    .stApp > * {
         position: relative;
         z-index: 1;
-    }}
+    }
 
 
-    .stApp > header {{ 
+    .stApp > header { 
         background-color: transparent; 
-    }}
+    }
 
     /* Main container styling */
-    .main .block-container {{
+    .main .block-container {
         background-color: rgba(0, 0, 0, 0.85);
         border: 2px solid #FFD700;
         box-shadow: 0 0 30px 10px #FFD700;
         padding: 2rem;
         border-radius: 10px;
         text-align: center;
-    }}
+    }
 
     /* Typography */
-    h1 {{
-        font-family: 'Orbitron', sans-serif;
+    h1 {
         color: #FFD700;
         text-shadow: 0 0 5px #000, 0 0 10px #000;
         font-weight: 800; /* Extra Bold */
         margin-top: 24px; /* Top padding */
-    }}
-    h2 {{
-        font-family: 'Orbitron', sans-serif;
+    }
+    h2 {
         color: #FFD700; /* Changed from #fff for consistency */
         text-shadow: 0 0 5px #000, 0 0 10px #000;
         font-weight: 400; /* Normal */
-    }}
-    h3, p, label, .st-emotion-cache-16txtl3 {{
-        font-family: 'Orbitron', sans-serif;
+    }
+    h3, p, label, .st-emotion-cache-16txtl3 {
         color: #FFD700; /* Changed from #feda4a for contrast */
         text-shadow: 0 0 5px #000, 0 0 10px #000;
-    }}
+    }
 
     /* Buttons */
-    .stButton>button {{
+    .stButton>button {
         border: 2px solid #FFD700;
         background-color: #FFD700;
         color: #000;
@@ -98,14 +93,14 @@ def load_css():
         font-weight: bold;
         text-transform: uppercase;
         width: 100%;
-    }}
-    .stButton>button:hover {{
+    }
+    .stButton>button:hover {
         background-color: #000;
         color: #FFD700;
-    }}
+    }
 
     /* Intro text */
-    .intro-text {{
+    .intro-text {
         font-size: 1.2em;
         line-height: 1.6;
         text-align: center;
@@ -113,15 +108,15 @@ def load_css():
         margin-bottom: 2em;
         font-weight: 300; /* Light */
         font-style: italic;
-    }}
+    }
 
     /* st.info alignment */
-    .st-emotion-cache-1c7y2kd {{
+    .st-emotion-cache-1c7y2kd {
         text-align: center;
-    }}
+    }
 
     /* Optional: Animated starfield background (commented out)
-    .stApp::after {{
+    .stApp::after {
         content: "";
         position: fixed;
         top: 0; left: 0;
@@ -133,13 +128,14 @@ def load_css():
         z-index: -2;
         animation: drift 60s linear infinite;
     }}
-    @keyframes drift {{
-        from {{ background-position: 0 0; }}
-        to {{ background-position: 10000px 0; }}
+    @keyframes drift {
+        from { background-position: 0 0; }
+        to { background-position: 10000px 0; }
     }}
     */
 
     </style>
+    """
     """, unsafe_allow_html=True)
 
 # --- Language Content ---
@@ -151,9 +147,9 @@ content = {
 Мир, в котором сила — это любовь,
 а путь один — вместе.""",
         "header": "С большой радостью",
-        "alliance": """Ботагоз и Алишер
+        "alliance": """<h2>Ботагоз и Алишер</h2>
 приглашают вас разделить с ними день,
-в который их вселенные станут одним целым.""",
+в который их вселенные станут одним целым."""
         "date": "6 сентября 2025 года",
         "time": "17:00",
         "address_intro": "Ресторан Portofino, Астана. Проспект Туран, 27",
@@ -180,9 +176,10 @@ content = {
 Күш — махаббат,
 ал жол біреу — бірге.""",
         "header": "Үлкен қуанышпен",
-        "alliance": """Ботагөз бен Әлішер
+        alliance": """<h2>Ботагөз бен Әлішер</h2>
 сіздерді өздерінің ғаламдары біртұтас болатын күнді
 бірге өткізуге шақырады.""",
+
         "date": "2025 жылғы 6 қыркүйек",
         "time": "17:00",
         "address_intro": "Portofino мейрамханасы, Астана. Тұран даңғылы, 27",
