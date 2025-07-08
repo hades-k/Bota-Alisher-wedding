@@ -41,19 +41,36 @@ def load_css():
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
+        position: relative;
+        overflow: hidden;
     }}
+
+    /* Dark overlay to improve readability */
+    .stApp::before {{
+        content: "";
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.6);  /* darkness overlay */
+        z-index: -1;
+    }}
+
     .stApp > header {{ 
         background-color: transparent; 
     }}
+
     /* Main container styling */
     .main .block-container {{
-        background-color: rgba(0, 0, 0, 0.95);
+        background-color: rgba(0, 0, 0, 0.85);
         border: 2px solid #feda4a;
         box-shadow: 0 0 30px 10px #feda4a;
         padding: 2rem;
         border-radius: 10px;
         text-align: center;
     }}
+
+    /* Typography */
     h1, h2, h3, p, label, .st-emotion-cache-16txtl3 {{
         font-family: 'Orbitron', sans-serif;
         color: #feda4a;
@@ -61,6 +78,8 @@ def load_css():
     }}
     h1 {{ text-transform: uppercase; }}
     h2 {{ color: #fff; }}
+
+    /* Buttons */
     .stButton>button {{
         border: 2px solid #feda4a;
         background-color: #feda4a;
@@ -75,6 +94,8 @@ def load_css():
         background-color: #000;
         color: #feda4a;
     }}
+
+    /* Intro text */
     .intro-text {{
         font-size: 1.2em;
         line-height: 1.6;
@@ -82,6 +103,26 @@ def load_css():
         transform: perspective(300px) rotateX(15deg);
         margin-bottom: 2em;
     }}
+
+    /* Optional: Animated starfield background (commented out)
+    .stApp::after {{
+        content: "";
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('https://raw.githubusercontent.com/Julian-Nash/starfield-animation/main/starfield-bg.gif') repeat;
+        background-size: cover;
+        opacity: 0.08;
+        z-index: -2;
+        animation: drift 60s linear infinite;
+    }}
+    @keyframes drift {{
+        from {{ background-position: 0 0; }}
+        to {{ background-position: 10000px 0; }}
+    }}
+    */
+
     </style>
     """, unsafe_allow_html=True)
 
