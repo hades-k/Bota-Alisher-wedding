@@ -47,7 +47,7 @@ def load_css():
     }}
     /* Main container styling */
     .main .block-container {{
-        background-color: rgba(0, 0, 0, 0.85);
+        background-color: rgba(0, 0, 0, 0.95);
         border: 2px solid #feda4a;
         box-shadow: 0 0 30px 10px #feda4a;
         padding: 2rem;
