@@ -1,8 +1,9 @@
 import streamlit as st
 import pandas as pd
-import os
 import base64
 import datetime
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
 # --- Page Configuration ---
 st.set_page_config(
@@ -11,10 +12,11 @@ st.set_page_config(
     layout="centered" # Use centered layout for better focus
 )
 
-# --- File for RSVPs ---
-RSVP_FILE = "rsvps.csv"
+# --- Google Sheets Setup ---
+# Scope for Google Sheets API
+SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
-# --- Function to get base64 encoded image for CSS ---
+# Function to get base64 encoded image for CSS ---
 def get_base64_of_bin_file(bin_file):
     try:
         with open(bin_file, 'rb') as f:
@@ -22,6 +24,24 @@ def get_base64_of_bin_file(bin_file):
         return base64.b64encode(data).decode()
     except FileNotFoundError:
         return None
+
+# Function to connect to Google Sheet
+@st.cache_resource(ttl=3600) # Cache the connection for 1 hour
+def get_google_sheet_client():
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["gcp_service_account"], SCOPE)
+    client = gspread.authorize(creds)
+    return client
+
+# Initialize Google Sheet client
+try:
+    gc = get_google_sheet_client()
+    # IMPORTANT: Replace "YOUR_GOOGLE_SHEET_NAME" with the actual name of your Google Sheet
+    worksheet = gc.open("свадьба гости").sheet1
+except Exception as e:
+    st.error(f"Error connecting to Google Sheet. Please check your Streamlit secrets and sheet name. Details: {e}")
+    st.stop() # Stop the app if connection fails
+
+
 
 # --- Load Custom CSS for Star Wars Theme ---
 def load_css():
@@ -245,21 +265,20 @@ else:
                 st.error(t["error_name"])
             else:
                 try:
-                    response_data = pd.DataFrame.from_records([{
-                        "Name": guest_name.strip(),
-                        "Attendance": attendance,
-                        "Timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    }])
-
-                    if not os.path.exists(RSVP_FILE):
-                        # Create the file with headers if it doesn't exist
-                        pd.DataFrame(columns=["Name", "Attendance", "Timestamp"]).to_csv(RSVP_FILE, index=False)
-                    response_data.to_csv(RSVP_FILE, mode='a', header=False, index=False)
+                    # Prepare data for Google Sheet
+                    row_data = [
+                        guest_name.strip(),
+                        attendance,
+                        datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    ]
+                    
+                    # Append to Google Sheet
+                    worksheet.append_row(row_data)
                     
                     st.session_state.form_submitted = True
                     st.rerun()
 
                 except Exception as e:
-                    st.error(f"An error occurred: {e}")
+                    st.error(f"An error occurred while saving to Google Sheet: {e}")
 
 
