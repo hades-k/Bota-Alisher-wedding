@@ -46,15 +46,20 @@ def load_css():
     }}
 
     /* Dark overlay to improve readability */
-    .stApp::before {{
+    .stApp::before {
         content: "";
-        position: fixed;
+        position: absolute;
         top: 0; left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.6);  /* darkness overlay */
-        z-index: -1;
-    }}
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);  /* Dark overlay */
+        z-index: 0;
+    }
+    .stApp > * {
+        position: relative;
+        z-index: 1;
+    }
+
 
     .stApp > header {{ 
         background-color: transparent; 
