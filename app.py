@@ -219,7 +219,56 @@ def get_countdown(wedding_date, lang_content):
 lang_choice = st.sidebar.radio("Language / Тіл", ["Русский", "Қазақ"], label_visibility="collapsed")
 lang = "ru" if lang_choice == "Русский" else "kz"
 
-t = content[lang]
+t = content[lang
+
+st.markdown("""
+<style>
+.glimmer-stars {
+  pointer-events: none;
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: 9999;
+  overflow: hidden;
+}
+.glimmer-stars span {
+  position: absolute;
+  font-size: 10px;
+  color: #FFD700;
+  opacity: 0.6;
+  animation: glimmer 2.5s infinite;
+  text-shadow: 0 0 8px #FFD700, 0 0 16px #fff;
+}
+/* Corners */
+.glimmer-stars span:nth-child(1) { left: 22vw; top: 2vh; animation-delay: 0s; }
+.glimmer-stars span:nth-child(2) { left: 97vw; top: 5vh; animation-delay: 0.5s; }
+.glimmer-stars span:nth-child(3) { left: 2vw; top: 97vh; animation-delay: 1s; }
+.glimmer-stars span:nth-child(4) { left: 97vw; top: 97vh; animation-delay: 1.5s; }
+/* Top and bottom edges */
+.glimmer-stars span:nth-child(7) { left: 60vw; top: 8vh; animation-delay: 1.2s; }
+.glimmer-stars span:nth-child(8) { left: 80vw; top: 3vh; animation-delay: 1.7s; }
+.glimmer-stars span:nth-child(11) { left: 60vw; top: 98vh; animation-delay: 1.4s; }
+.glimmer-stars span:nth-child(12) { left: 80vw; top: 98vh; animation-delay: 1.9s; }
+/* Left and right edges */
+.glimmer-stars span:nth-child(13) { left: 24vw; top: 20vh; animation-delay: 0.3s; }
+.glimmer-stars span:nth-child(14) { left: 20vw; top: 40vh; animation-delay: 0.8s; }
+.glimmer-stars span:nth-child(15) { left: 30vw; top: 60vh; animation-delay: 1.3s; }
+.glimmer-stars span:nth-child(17) { left: 85vw; top: 20vh; animation-delay: 0.6s; }
+.glimmer-stars span:nth-child(18) { left: 88vw; top: 40vh; animation-delay: 1.1s; }
+.glimmer-stars span:nth-child(20) { left: 93vw; top: 80vh; animation-delay: 2.1s; }
+
+@keyframes glimmer {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+</style>
+<div class="glimmer-stars">
+  <span>★</span><span>★</span><span>★</span><span>★</span>
+  <span>★</span><span>★</span><span>★</span><span>★</span>
+  <span>★</span><span>★</span><span>★</span><span>★</span>
+  <span>★</span><span>★</span><span>★</span><span>★</span>
+  <span>★</span><span>★</span><span>★</span><span>★</span>
+</div>
+""", unsafe_allow_html=True)
 
 # --- Display Invitation Details ---
 
@@ -285,54 +334,6 @@ st.markdown(f"<h2 style='color:#FFD700'>{get_countdown(wedding_date, t)}</h2>", 
 st.write("")
 st.markdown(f"<h3 style='color:#FFD700'>{t['final_message']}</h3>", unsafe_allow_html=True)
 
-st.markdown("""
-<style>
-.glimmer-stars {
-  pointer-events: none;
-  position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
-  z-index: 9999;
-  overflow: hidden;
-}
-.glimmer-stars span {
-  position: absolute;
-  font-size: 10px;
-  color: #FFD700;
-  opacity: 0.6;
-  animation: glimmer 2.5s infinite;
-  text-shadow: 0 0 8px #FFD700, 0 0 16px #fff;
-}
-/* Corners */
-.glimmer-stars span:nth-child(1) { left: 22vw; top: 2vh; animation-delay: 0s; }
-.glimmer-stars span:nth-child(2) { left: 97vw; top: 5vh; animation-delay: 0.5s; }
-.glimmer-stars span:nth-child(3) { left: 2vw; top: 97vh; animation-delay: 1s; }
-.glimmer-stars span:nth-child(4) { left: 97vw; top: 97vh; animation-delay: 1.5s; }
-/* Top and bottom edges */
-.glimmer-stars span:nth-child(7) { left: 60vw; top: 8vh; animation-delay: 1.2s; }
-.glimmer-stars span:nth-child(8) { left: 80vw; top: 3vh; animation-delay: 1.7s; }
-.glimmer-stars span:nth-child(11) { left: 60vw; top: 98vh; animation-delay: 1.4s; }
-.glimmer-stars span:nth-child(12) { left: 80vw; top: 98vh; animation-delay: 1.9s; }
-/* Left and right edges */
-.glimmer-stars span:nth-child(13) { left: 24vw; top: 20vh; animation-delay: 0.3s; }
-.glimmer-stars span:nth-child(14) { left: 20vw; top: 40vh; animation-delay: 0.8s; }
-.glimmer-stars span:nth-child(15) { left: 30vw; top: 60vh; animation-delay: 1.3s; }
-.glimmer-stars span:nth-child(17) { left: 85vw; top: 20vh; animation-delay: 0.6s; }
-.glimmer-stars span:nth-child(18) { left: 88vw; top: 40vh; animation-delay: 1.1s; }
-.glimmer-stars span:nth-child(20) { left: 93vw; top: 80vh; animation-delay: 2.1s; }
-
-@keyframes glimmer {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
-}
-</style>
-<div class="glimmer-stars">
-  <span>★</span><span>★</span><span>★</span><span>★</span>
-  <span>★</span><span>★</span><span>★</span><span>★</span>
-  <span>★</span><span>★</span><span>★</span><span>★</span>
-  <span>★</span><span>★</span><span>★</span><span>★</span>
-  <span>★</span><span>★</span><span>★</span><span>★</span>
-</div>
-""", unsafe_allow_html=True)
 
 st.markdown(
     "<div style='text-align:center; color:#FFD700; margin-top:2em;'>"
