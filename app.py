@@ -25,7 +25,7 @@ def get_base64_of_bin_file(bin_file):
 
 # --- Load Custom CSS for Star Wars Theme ---
 def load_css():
-    encoded_image = get_base64_of_bin_file("background.png")
+    encoded_image = get_base64_of_bin_file("background-1.png")
     st.markdown(f"""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
@@ -172,15 +172,9 @@ content = {
         'date': "6 сентября 2025 года",
         'time': '17:00',
         'time_intro': '🕔 Время встречи',
-       
         "rsvp_intro": "Подтвердите свое присутствие до 20 августа (еще не работает)",
-        "form_name": "Ваше имя (Имена гостей)",
-        "form_attendance": "Подтверждаете присутствие?",
-        "option_yes": "Да, я присоединюсь к Альянсу",
-        "option_no": "Нет, я на стороне Империи",
         "submit_button": "Отправить ответ",
         "thank_you": "Спасибо! Ваш ответ записан в голокрон.",
-        "error_name": "Пожалуйста, введите ваше имя, юный падаван.",
         "countdown_text": "До нашего мероприятия осталось:",
         "days": "дней",
         "hours": "часов",
@@ -199,13 +193,8 @@ content = {
         "address_intro": "Portofino мейрамханасы, Астана. Тұран даңғылы, 27",
         "address_placeholder": "Дресс-код: салтанатты, жеңіл жарқыраған ✨",
         "rsvp_intro": "Қатысуыңызды 20 тамызға дейін растаңыз",
-        "form_name": "Сіздің есіміңіз (Қонақтардың есімдері)",
-        "form_attendance": "Қатысуды растайсыз ба?",
-        "option_yes": "Иә, мен Альянсқа қосыламын",
-        "option_no": "Жоқ, мен Империя жағындамын",
         "submit_button": "Жауапты жіберу",
         "thank_you": "Рахмет! Сіздің жауабыңыз голокронға жазылды.",
-        "error_name": "Есіміңізді енгізіңіз, жас падаван.",
         "countdown_text": "Тойымызға қалды:",
         "days": "күн",
         "hours": "сағат",
@@ -214,7 +203,6 @@ content = {
         "final_message": "Сізбен бірге... мереке болсын."
     }
 }
-
 # --- Landing Page Logic ---
 def show_landing_page():
     # Use background.png as background
@@ -291,10 +279,10 @@ block_glow_css = """
     width: 720px;
     max-width: 95vw;
     margin: 18px auto 18px auto;
-    background: rgba(0,0,0,0.85);
+    background: rgba(0,0,0,0.75);
     border-radius: 18px;
-    box-shadow: 0 0 32px 8px #FFD70099, 0 0 0 4px #FFD70044;
-    padding: 18px 32px 14px 32px;
+    box-shadow: 0 0 18px 7px #FFD70099, 0 0 0 4px #FFD70044;
+    padding: 12px 25px 12px 25px;
     border: 2px solid #FFD700;
     text-align: center;
 }
@@ -409,17 +397,7 @@ st.markdown("""
 </div>
 """.format(dresscode_intro=t['dresscode_intro'], dresscode_dark=t['dresscode_dark'], dresscode_light=t['dresscode_light'], dresscode_last=t['dresscode_last']), unsafe_allow_html=True)
 
-
-# --- Countdown & Final Message ---
-st.write("")
-st.subheader(f"⏳ {t['countdown_text']}")
-st.markdown(f"<h2 style='color:#FFD700'>{get_countdown(wedding_date, t)}</h2>", unsafe_allow_html=True)
-st.write("")
-st.markdown(f"<h3>{t['final_message']}</h3>", unsafe_allow_html=True)
-st.markdown(f"<h3><b>{t['farewell']}</b></h3>", unsafe_allow_html=True)
-
 st.write("")  # Spacer
-st.markdown("---")
 
 # --- RSVP Form ---
 st.header(t["rsvp_intro"])
@@ -431,34 +409,56 @@ if st.session_state.form_submitted:
     st.success(t["thank_you"])
 else:
     with st.form(key="rsvp_form"):
-        guest_name = st.text_input(label=t["form_name"])
-        attendance = st.radio(
-            label=t["form_attendance"],
-            options=[t["option_yes"], t["option_no"]],
-            index=0
-        )
+        st.write("Дорогие гости, подтверждаете присутствие?")
+        
+        # Create three columns for the checkboxes
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            yes_1 = st.checkbox("Да, 1", key="yes_1")
+        with col2:
+            yes_2 = st.checkbox("Да, 2", key="yes_2")
+        with col3:
+            no = st.checkbox("Нет", key="no")
+
         submitted = st.form_submit_button(label=t["submit_button"])
 
         if submitted:
-            if not guest_name.strip():
-                st.error(t["error_name"])
-            else:
-                try:
-                    response_data = pd.DataFrame([{
-                        "Name": guest_name.strip(),
-                        "Attendance": attendance,
-                        "Timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    }])
+            # Determine attendance based on which box is checked
+            attendance = "Нет"
+            if yes_1:
+                attendance = "Да, 1"
+            elif yes_2:
+                attendance = "Да, 2"
+            elif no:
+                attendance = "Нет"
+            
+            # You can have a default name or leave it empty
+            guest_name = "Anonymous" 
 
-                    if not os.path.exists(RSVP_FILE):
-                        pd.DataFrame(columns=["Name", "Attendance", "Timestamp"]).to_csv(RSVP_FILE, index=False)
+            try:
+                response_data = pd.DataFrame([{
+                    "Name": guest_name,
+                    "Attendance": attendance,
+                    "Timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                }])
 
-                    response_data.to_csv(RSVP_FILE, mode="a", header=False, index=False)
+                if not os.path.exists(RSVP_FILE):
+                    pd.DataFrame(columns=["Name", "Attendance", "Timestamp"]).to_csv(RSVP_FILE, index=False)
 
-                    st.session_state.form_submitted = True
-                    st.rerun()
+                response_data.to_csv(RSVP_FILE, mode="a", header=False, index=False)
 
-                except Exception as e:
-                    st.error(f"Произошла ошибка: {e}")
-                    st.exception(e)
+                st.session_state.form_submitted = True
+                st.rerun()
 
+            except Exception as e:
+                st.error(f"Произошла ошибка: {e}")
+                st.exception(e)
+
+# --- Countdown & Final Message ---
+st.write("")
+st.subheader(f"⏳ {t['countdown_text']}")
+st.markdown(f"<h2 style='color:#FFD700'>{get_countdown(wedding_date, t)}</h2>", unsafe_allow_html=True)
+st.write("")
+st.markdown(f"<h3>{t['final_message']}</h3>", unsafe_allow_html=True)
+st.markdown(f"<h3><b>{t['farewell']}</b></h3>", unsafe_allow_html=True)
