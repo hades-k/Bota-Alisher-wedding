@@ -206,8 +206,95 @@ content = {
     }
 }
 
+# --- Landing Page Logic ---
+def show_landing_page():
+    # Use background.png as background
+    encoded_bg = get_base64_of_bin_file("background.png")
+    st.markdown(f"""
+    <style>
+    .landing-bg {{
+        position: fixed;
+        top: 0; left: 0; width: 100vw; height: 100vh;
+        background-image: url('data:image/png;base64,{encoded_bg}');
+        background-size: cover;
+        background-position: center;
+        z-index: 0;
+    }}
+    .center-btn {{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }}
+    .landing-btn-container button {{
+        background: #FFD700;
+        color: #000;
+        border: 2px solid #FFD700;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 1.1em;
+        padding: 10px 32px;
+        box-shadow: 0 0 10px #FFD700;
+        cursor: pointer;
+        transition: all 0.2s;
+    }}
+    .landing-btn-container button:hover {{
+        background: #000;
+        color: #FFD700;
+        box-shadow: 0 0 20px #FFD700;
+    }}
+    </style>
+    <div class="landing-bg"></div>
+    <div class="center-btn">
+        <div class="landing-btn-container" id="landing-btn-anchor"></div>
+    </div>
+    """, unsafe_allow_html=True)
+    # Place the button using Streamlit (centered)
+    st.markdown("<div style='height: 120px'></div>", unsafe_allow_html=True)  # Spacer for Streamlit layout
+    btn_placeholder = st.empty()
+    with btn_placeholder.container():
+        btn_clicked = st.button("Продолжить / Continue", key="continue_btn", help="Открыть приглашение")
+    if btn_clicked:
+        st.session_state.landing_done = True
+        st.rerun()
+
+# --- Main App Routing ---
+if "landing_done" not in st.session_state:
+    st.session_state.landing_done = False
+
+if not st.session_state.landing_done:
+    show_landing_page()
+    st.stop()
+
 # --- Main App Logic ---
 load_css()
+
+# Add custom CSS for glowing background block behind main text
+block_glow_css = """
+<style>
+.glow-block {
+    display: inline-block;
+    background: rgba(0,0,0,0.85);
+    border-radius: 18px;
+    box-shadow: 0 0 32px 8px #FFD70099, 0 0 0 4px #FFD70044;
+    padding: 18px 32px 14px 32px;
+    margin: 18px 0 18px 0;
+    border: 2px solid #FFD700;
+}
+.glow-block h1, .glow-block names, .glow-block p {
+    color: #FFD700 !important;
+    text-shadow: none !important;
+    font-family: 'Russo One', sans-serif !important;
+    margin: 0 0 8px 0;
+}
+</style>
+"""
+st.markdown(block_glow_css, unsafe_allow_html=True)
 
 # Wedding Date for Countdown
 wedding_date = datetime.datetime(2025, 9, 6, 17, 0)
@@ -283,12 +370,15 @@ st.markdown("""
 
 # --- Display Invitation Details ---
 
-st.markdown(f"<h1>{t['title']}</h1>", unsafe_allow_html=True)
-st.markdown(f"**{t['intro1']}**")
-st.markdown(t['intro2'])
-
-st.markdown(f"<names>**{t['header']}**</names>", unsafe_allow_html=True)
-st.markdown(f"**{t['alliance']}**")
+st.markdown(f"""
+<div class='glow-block'>
+    <h1>{t['title']}</h1>
+    <p><b>{t['intro1']}</b></p>
+    <p>{t['intro2']}</p>
+    <names><b>{t['header']}</b></names>
+    <p><b>{t['alliance']}</b></p>
+</div>
+""", unsafe_allow_html=True)
 
 st.write("")  # Spacer
 st.info(f"📅 **{t['date']} | {t['time']}**")
