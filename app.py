@@ -8,7 +8,7 @@ import datetime
 st.set_page_config(
     page_title="Бота & Алишер",
     page_icon="💍",
-    layout="centered" # Use centered layout for better focus
+    layout="centered" 
 )
 
 # --- File for RSVPs ---
@@ -97,7 +97,7 @@ def load_css():
     .main .block-container p {{
         color: #FFD700;
         text-shadow: 0 0 5px #000, 0 0 10px #000;
-        font-size: 1.3em; /* Increased font size for basic markdown text */
+        font-size: 1.3em; 
     }}
     p {{
         color: #FFD700;
@@ -231,6 +231,7 @@ lang = "ru" if lang_choice == "Русский" else "kz"
 
 t = content[lang]
 
+#stars 
 st.markdown("""
 <style>
 .glimmer-stars {
@@ -336,6 +337,7 @@ else:
                 except Exception as e:
                     st.error(f"Произошла ошибка: {e}")
                     st.exception(e)
+
 
 # --- Countdown & Final Message ---
 st.write("")
