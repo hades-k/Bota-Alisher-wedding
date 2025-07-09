@@ -381,8 +381,13 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 st.write("")  # Spacer
-st.info(f"📅 **{t['date']} | {t['time']}**")
-st.success(f"📍 {t['address_intro']}\n\n{t['address_placeholder']}")
+
+st.markdown(f"""
+<div class='glow-block'>
+    <p>{t['date']}  | {t['time']} </p>
+    <p>{t['address_intro']}\n\n{t['address_placeholder']}</p>
+</div>
+""", unsafe_allow_html=True)
 
 st.write("")  # Spacer
 st.markdown("---")
