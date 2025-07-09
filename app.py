@@ -38,6 +38,7 @@ def load_css():
         position: relative;
         overflow: hidden;
         font-family: 'Inter', sans-serif;
+        text-align: center;
     }}
     
     .stApp > * {{
@@ -154,15 +155,24 @@ def load_css():
 # --- Language Content ---
 content = {
     "ru": {
-        "title": "Приглашение на свадьбу",
-        "intro1": 'Когда две звезды пересекаются на орбите судьбы - рождается новый мир.',
-        'intro2': '💫Мир, в котором сила - это любовь, а путь один - вместе💫',
-        "header": "Ботагоз и Алишер",
-        "alliance": '''приглашают вас разделить с ними день, в который их вселенные станут одним целым.''',
-        "date": "6 сентября 2025 года",
-        "time": "17:00",
-        "address_intro": "Ресторан Portofino, Астана. Проспект Туран, 27",
-        "address_placeholder": "Дресс-код: торжественный, с лёгким сиянием ✨",
+        "title": "Two hearts. One galaxy. Infinite adventures.",
+        'subtitle': 'Наш семейный альянс рад сообщить:',
+        'intro1': 'В галактике, не такой уж далёкой,',
+        'intro2': 'скоро произойдёт объединение двух звёздных систем -',
+        'intro3': 'нашей дочери Ботагоз и её избранного Алишера.',
+        'address_intro': '🌌 Звездная точка встречи:',
+        'address': "📍Ресторан Portofino, Астана. Проспект Туран, 27",
+        'dresscode_intro': '👗 Дресс-код:',
+        'dresscode_dark': 'Тёмные образы — для тех, кто выбирает силу и форму',
+        'dresscode_light': 'Светлые — для тех, кто несёт свет и тепло',
+        'dresscode_last': 'Главное — сияние в глазах и порядок в галактике',
+        'invite': 'Приглашаем вас стать частью этого межгалактического события.',
+        'final_message': 'Да пребудет с вами любовь. И хорошее настроение.',
+        'farewell': 'С нетерпением ждём встречи, Нурлан и Сауле 💛',
+        'date': "6 сентября 2025 года",
+        'time': '17:00',
+        'time_intro': '🕔 Время встречи',
+       
         "rsvp_intro": "Подтвердите свое присутствие до 20 августа (еще не работает)",
         "form_name": "Ваше имя (Имена гостей)",
         "form_attendance": "Подтверждаете присутствие?",
@@ -171,12 +181,11 @@ content = {
         "submit_button": "Отправить ответ",
         "thank_you": "Спасибо! Ваш ответ записан в голокрон.",
         "error_name": "Пожалуйста, введите ваше имя, юный падаван.",
-        "countdown_text": "До нашей свадьбы осталось:",
+        "countdown_text": "До нашего мероприятия осталось:",
         "days": "дней",
         "hours": "часов",
         "minutes": "минут",
         "wedding_started": "Свадьба началась!",
-        "final_message": "Да пребудет с вами… праздник."
     },
 
     "kz": {
@@ -278,13 +287,16 @@ load_css()
 block_glow_css = """
 <style>
 .glow-block {
-    display: inline-block;
+    display: block;
+    width: 720px;
+    max-width: 95vw;
+    margin: 18px auto 18px auto;
     background: rgba(0,0,0,0.85);
     border-radius: 18px;
     box-shadow: 0 0 32px 8px #FFD70099, 0 0 0 4px #FFD70044;
     padding: 18px 32px 14px 32px;
-    margin: 18px 0 18px 0;
     border: 2px solid #FFD700;
+    text-align: center;
 }
 .glow-block h1, .glow-block names, .glow-block p {
     color: #FFD700 !important;
@@ -296,7 +308,6 @@ block_glow_css = """
 """
 st.markdown(block_glow_css, unsafe_allow_html=True)
 
-# Wedding Date for Countdown
 wedding_date = datetime.datetime(2025, 9, 6, 17, 0)
 
 def get_countdown(wedding_date, lang_content):
@@ -370,19 +381,42 @@ st.markdown("""
 
 # --- Display Invitation Details ---
 
-st.markdown(f"""
-<div class='glow-block'>
-    <h1>{t['title']}</h1>
-    <p><b>{t['intro1']}</b></p>
-    <p>{t['intro2']}</p>
-    <names><b>{t['header']}</b></names>
-    <p><b>{t['alliance']}</b></p>
-</div>
-""", unsafe_allow_html=True)
+st.markdown(f'<h1>{t["title"]}</h1>', unsafe_allow_html=True)
 
-st.write("")  # Spacer
-st.info(f"📅 **{t['date']} | {t['time']}**")
-st.success(f"📍 {t['address_intro']}\n\n{t['address_placeholder']}")
+st.markdown("""
+<div class='glow-block'>
+    <p>{intro1}</p>
+    <p>{intro2}</p>
+    <h2>{intro3}</h2>
+</div>
+""".format(intro1=t['intro1'], intro2=t['intro2'], intro3=t['intro3']), unsafe_allow_html=True)
+
+st.markdown("""
+<div class='glow-block'>
+    <p>{address_intro}</p>
+    <p>{address}</p>
+    <p>{time_intro}</p>
+    <p>{date} | {time}</p>
+</div>
+""".format(address_intro=t['address_intro'], address=t['address'], time_intro=t['time_intro'], date=t['date'], time=t['time']), unsafe_allow_html=True)
+
+st.markdown("""
+<div class='glow-block'>
+    <p>{dresscode_intro}</p>
+    <p>{dresscode_dark}</p>
+    <p>{dresscode_light}</p>
+    <p>{dresscode_last}</p>
+</div>
+""".format(dresscode_intro=t['dresscode_intro'], dresscode_dark=t['dresscode_dark'], dresscode_light=t['dresscode_light'], dresscode_last=t['dresscode_last']), unsafe_allow_html=True)
+
+
+# --- Countdown & Final Message ---
+st.write("")
+st.subheader(f"⏳ {t['countdown_text']}")
+st.markdown(f"<h2 style='color:#FFD700'>{get_countdown(wedding_date, t)}</h2>", unsafe_allow_html=True)
+st.write("")
+st.markdown(f"<h3>{t['final_message']}</h3>", unsafe_allow_html=True)
+st.markdown(f"<h3><b>{t['farewell']}</b></h3>", unsafe_allow_html=True)
 
 st.write("")  # Spacer
 st.markdown("---")
@@ -428,18 +462,3 @@ else:
                     st.error(f"Произошла ошибка: {e}")
                     st.exception(e)
 
-
-# --- Countdown & Final Message ---
-st.write("")
-st.subheader(f"⏳ {t['countdown_text']}")
-st.markdown(f"<h2 style='color:#FFD700'>{get_countdown(wedding_date, t)}</h2>", unsafe_allow_html=True)
-st.write("")
-st.markdown(f"<h3 style='color:#FFD700'>{t['final_message']}</h3>", unsafe_allow_html=True)
-
-
-st.markdown(
-    "<div style='text-align:center; color:#FFD700; margin-top:2em;'>"
-    "С любовью, Бота & Алишер 💛<br>May the Force be with you!"
-    "</div>",
-    unsafe_allow_html=True
-)
