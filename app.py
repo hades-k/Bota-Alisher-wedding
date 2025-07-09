@@ -28,6 +28,7 @@ def load_css():
     encoded_image = get_base64_of_bin_file("background.png")
     st.markdown(f"""
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
     /* Background and layout */
     .stApp {{
         background-image: url("data:image/png;base64,{encoded_image}");
@@ -60,25 +61,36 @@ def load_css():
 
     /* Typography */
     h1 {{
-        color: #FFD700;
+        color: #FFD700 !important;
         text-shadow: 0 0 8px #000, 0 0 16px #000;
         font-weight: 800;
-        font-size: 2.5em;
+        font-size: 2.3em;
         margin-top: 24px;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.04em;
+        font-family: 'Russo One', sans-serif !important;
     }}
 
     h2 {{
-        color: #FFD700;
+        color: #FFD700 !important;
         text-shadow: 0 0 5px #000, 0 0 10px #000;
         font-weight: 500;
         font-size: 1.75em;
+        font-family: 'Russo One', sans-serif !important;
+    }}
+    
+    names {{
+        color: #ffffff !important;
+        text-shadow: 0 0 5px #000, 0 0 10px #000;
+        font-weight: 500;
+        font-size: 1.75em;
+        font-family: 'Russo One', sans-serif !important;
     }}
 
     h3, label, .st-emotion-cache-16txtl3 {{
-        color: #FFD700;
+        color: #FFD700 !important;
         text-shadow: 0 0 5px #000, 0 0 10px #000;
         font-size: 1.1em;
+        font-family: 'Russo One', sans-serif !important;
     }}
 
     /* Markdown text */
@@ -146,13 +158,12 @@ content = {
         "intro1": 'Когда две звезды пересекаются на орбите судьбы - рождается новый мир.',
         'intro2': '💫Мир, в котором сила - это любовь, а путь один - вместе💫',
         "header": "Ботагоз и Алишер",
-        "alliance": '''приглашают вас разделить с ними день,
-в который их вселенные станут одним целым.''',
+        "alliance": '''приглашают вас разделить с ними день, в который их вселенные станут одним целым.''',
         "date": "6 сентября 2025 года",
         "time": "17:00",
         "address_intro": "Ресторан Portofino, Астана. Проспект Туран, 27",
         "address_placeholder": "Дресс-код: торжественный, с лёгким сиянием ✨",
-        "rsvp_intro": "Подтвердите свое присудствие до 20 августа (еще не работает)",
+        "rsvp_intro": "Подтвердите свое присутствие до 20 августа (еще не работает)",
         "form_name": "Ваше имя (Имена гостей)",
         "form_attendance": "Подтверждаете присутствие?",
         "option_yes": "Да, я присоединюсь к Альянсу",
@@ -173,8 +184,7 @@ content = {
         "intro1": 'Екі жұлдыз тағдыр орбитасында тоғысқанда - жаңа әлем дүниеге келеді.',
         'intro2': '💫Күш - махаббат, ал жол біреу - бірге.💫',
         "header": "Ботагоз бен Алишер",
-        "alliance": '''сіздерді өздерінің ғаламдары біртұтас болатын күнді
-бірге өткізуге шақырады.''',
+        "alliance": '''сіздерді өздерінің ғаламдары біртұтас болатын күнді бірге өткізуге шақырады.''',
         "date": "2025 жылғы 6 қыркүйек",
         "time": "17:00",
         "address_intro": "Portofino мейрамханасы, Астана. Тұран даңғылы, 27",
@@ -232,9 +242,9 @@ st.markdown("""
 }
 .glimmer-stars span {
   position: absolute;
-  font-size: 10px;
+  font-size: 6px;
   color: #FFD700;
-  opacity: 0.6;
+  opacity: 0.4;
   animation: glimmer 2.5s infinite;
   text-shadow: 0 0 8px #FFD700, 0 0 16px #fff;
 }
@@ -272,11 +282,11 @@ st.markdown("""
 
 # --- Display Invitation Details ---
 
-st.header(t["title"])
+st.markdown(f"<h1>{t['title']}</h1>", unsafe_allow_html=True)
 st.markdown(f"**{t['intro1']}**")
 st.markdown(t['intro2'])
 
-st.subheader(t["header"])
+st.markdown(f"<names>**{t['header']}**</names>", unsafe_allow_html=True)
 st.markdown(f"**{t['alliance']}**")
 
 st.write("")  # Spacer
