@@ -28,7 +28,9 @@ def load_css():
     encoded_image = get_base64_of_bin_file("background-1.png")
     st.markdown(f"""
     <style>
+    
         @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+        
     /* Background and layout */
     .stApp {{
         background-image: url("data:image/png;base64,{encoded_image}");
@@ -78,14 +80,6 @@ def load_css():
         font-size: 1.75em;
         font-family: 'Russo One', sans-serif !important;
     }}
-    
-    names {{
-        color: #ffffff !important;
-        text-shadow: 0 0 5px #000, 0 0 10px #000;
-        font-weight: 500;
-        font-size: 1.75em;
-        font-family: 'Russo One', sans-serif !important;
-    }}
 
     h3, label, .st-emotion-cache-16txtl3 {{
         color: #FFD700 !important;
@@ -100,6 +94,7 @@ def load_css():
         text-shadow: 0 0 5px #000, 0 0 10px #000;
         font-size: 1.3em; 
     }}
+    
     p {{
         color: #FFD700;
         font-size: 1.2em !important;
@@ -148,8 +143,37 @@ def load_css():
     .stTextInput>div>div>input::placeholder {{
         color: #ccc;
     }}
+    
+    .glow-block {{
+        display: block;
+        width: 720px;
+        max-width: 95vw;
+        margin: 18px auto 18px auto;
+        background: rgba(0,0,0,0.75);
+        border-radius: 18px;
+        box-shadow: 0 0 18px 7px #FFD70099, 0 0 0 4px #FFD70044;
+        padding: 12px 25px 12px 25px;
+        border: 2px solid #FFD700;
+        text-align: center;
+    }}   
+    
+    .glow-block h1, .glow-block names, .glow-block p {{
+        color: #FFD700 !important;
+        text-shadow: none !important;
+        font-family: 'Russo One', sans-serif !important;
+        margin: 0 0 8px 0;
+    }}
+    
+    .stCheckbox > div > label {{
+    color: #FFD700 !important;
+    text-shadow: 1px 1px 2px #000 !important;
+    font-size: 1.1em;
+    font-weight: 500;
+    }}
+    
     </style>
     """, unsafe_allow_html=True)
+
 
 
 # --- Language Content ---
@@ -159,50 +183,70 @@ content = {
         'subtitle': 'Наш семейный альянс рад сообщить:',
         'intro1': 'В галактике, не такой уж далёкой,',
         'intro2': 'скоро произойдёт объединение двух звёздных систем -',
-        'intro3': 'нашей дочери Ботагоз и её избранного Алишера.',
+        'intro3': 'нашей дочери',
+        'bo': 'Ботагоз',
+        'intro4': 'и её избранного',
+        'ali': 'Алишера',
         'address_intro': '🌌 Звездная точка встречи:',
         'address': "📍Ресторан Portofino, Астана. Проспект Туран, 27",
         'dresscode_intro': '👗 Дресс-код:',
-        'dresscode_dark': 'Тёмные образы — для тех, кто выбирает силу и форму',
-        'dresscode_light': 'Светлые — для тех, кто несёт свет и тепло',
-        'dresscode_last': 'Главное — сияние в глазах и порядок в галактике',
+        'dresscode': 'Вечерний стиль с космическими акцентами',
         'invite': 'Приглашаем вас стать частью этого межгалактического события.',
         'final_message': 'Да пребудет с вами любовь. И хорошее настроение.',
-        'farewell': 'С нетерпением ждём встречи, Нурлан и Сауле 💛',
+        'farewell': 'С нетерпением ждём встречи,',
+        'farewell_names': 'Нурлан и Сауле',
         'date': "6 сентября 2025 года",
         'time': '17:00',
-        'time_intro': '🕔 Время встречи',
+        'time_intro': '🕔 Время прибытия',
         "rsvp_intro": "Подтвердите свое присутствие до 20 августа (еще не работает)",
         "submit_button": "Отправить ответ",
         "thank_you": "Спасибо! Ваш ответ записан в голокрон.",
-        "countdown_text": "До нашего мероприятия осталось:",
+        "countdown_text": "⏳До нашего мероприятия осталось:",
         "days": "дней",
         "hours": "часов",
         "minutes": "минут",
-        "wedding_started": "Свадьба началась!",
+        "wedding_started": "Праздник началась!",
+        "rsvp_question": "Дорогие гости, подтверждаете присутствие?",
+        "rsvp_yes_1": "Да, 1",
+        "rsvp_yes_2": "Да, 2",
+        "rsvp_no": "Нет",
     },
 
     "kz": {
-        "title": "Үйлену тойына шақыру",
-        "intro1": 'Екі жұлдыз тағдыр орбитасында тоғысқанда - жаңа әлем дүниеге келеді.',
-        'intro2': '💫Күш - махаббат, ал жол біреу - бірге.💫',
-        "header": "Ботагоз бен Алишер",
-        "alliance": '''сіздерді өздерінің ғаламдары біртұтас болатын күнді бірге өткізуге шақырады.''',
-        "date": "2025 жылғы 6 қыркүйек",
-        "time": "17:00",
-        "address_intro": "Portofino мейрамханасы, Астана. Тұран даңғылы, 27",
-        "address_placeholder": "Дресс-код: салтанатты, жеңіл жарқыраған ✨",
-        "rsvp_intro": "Қатысуыңызды 20 тамызға дейін растаңыз",
+        "title": "Two hearts. One galaxy. Infinite adventures.",
+        'subtitle': 'Біздің отбасылық одақ қуана хабарлайды:',
+        'intro1': 'Алыс емес бір галактикада',
+        'intro2': 'жұлдызды екі жүйенің қосылуы орын алмақ -',
+        'intro3': 'қызымыз',
+        'bo': 'Ботагоз',
+        'intro4': 'және оның таңдағаны',
+        'ali': 'Алишер',
+        'address_intro': '🌌 Жұлдызды кездесу орыны:',
+        'address': "📍Астана қаласы, Тұран даңғылы 27, «Portofino» мейрамханасы",
+        'dresscode_intro': '👗 Дресс-код:',
+        'dresscode': 'Ғарыштық екпіндері бар кешкі стиль',
+        'invite': 'Сізді осы галактаралық оқиғаның бір бөлігі болуға шақырамыз.',
+        'final_message': 'Сүйіспеншілік пен көтеріңкі көңіл сізбен бірге болсын.',
+        'farewell': 'Кездескенше асыға күтеміз,',
+        'farewell_names': 'Нұрлан - Сауле',
+        'date': "2025 ж. 6 қыркүйек",
+        'time': 'сағат 17:00',
+        'time_intro': '🕔 Келу уақыты:',
+        "rsvp_intro": "Қатысуыңызды 20 тамызға дейін растаңыз (әлі жұмыс істемейді)",
         "submit_button": "Жауапты жіберу",
         "thank_you": "Рахмет! Сіздің жауабыңыз голокронға жазылды.",
-        "countdown_text": "Тойымызға қалды:",
+        "countdown_text": "⏳Тойымызға қалды:",
         "days": "күн",
         "hours": "сағат",
         "minutes": "минут",
-        "wedding_started": "Той басталды!",
-        "final_message": "Сізбен бірге... мереке болсын."
+        "wedding_started": "Мереке басталды!",
+        "rsvp_question": "Құрметті қонақтар, қатысатыныңызды растайсыз ба?",
+        "rsvp_yes_1": "Иә, 1",
+        "rsvp_yes_2": "Иә, 2",
+        "rsvp_no": "Жоқ",
     }
 }
+
 # --- Landing Page Logic ---
 def show_landing_page():
     # Use background.png as background
@@ -271,31 +315,6 @@ if not st.session_state.landing_done:
 # --- Main App Logic ---
 load_css()
 
-# Add custom CSS for glowing background block behind main text
-block_glow_css = """
-<style>
-.glow-block {
-    display: block;
-    width: 720px;
-    max-width: 95vw;
-    margin: 18px auto 18px auto;
-    background: rgba(0,0,0,0.75);
-    border-radius: 18px;
-    box-shadow: 0 0 18px 7px #FFD70099, 0 0 0 4px #FFD70044;
-    padding: 12px 25px 12px 25px;
-    border: 2px solid #FFD700;
-    text-align: center;
-}
-.glow-block h1, .glow-block names, .glow-block p {
-    color: #FFD700 !important;
-    text-shadow: none !important;
-    font-family: 'Russo One', sans-serif !important;
-    margin: 0 0 8px 0;
-}
-</style>
-"""
-st.markdown(block_glow_css, unsafe_allow_html=True)
-
 wedding_date = datetime.datetime(2025, 9, 6, 17, 0)
 
 def get_countdown(wedding_date, lang_content):
@@ -317,89 +336,32 @@ lang = "ru" if lang_choice == "Русский" else "kz"
 
 t = content[lang]
 
-#stars 
-st.markdown("""
-<style>
-.glimmer-stars {
-  pointer-events: none;
-  position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
-  z-index: 9999;
-  overflow: hidden;
-}
-.glimmer-stars span {
-  position: absolute;
-  font-size: 6px;
-  color: #FFD700;
-  opacity: 0.4;
-  animation: glimmer 2.5s infinite;
-  text-shadow: 0 0 8px #FFD700, 0 0 16px #fff;
-}
-/* Corners */
-.glimmer-stars span:nth-child(1) { left: 22vw; top: 2vh; animation-delay: 0s; }
-.glimmer-stars span:nth-child(2) { left: 97vw; top: 5vh; animation-delay: 0.5s; }
-.glimmer-stars span:nth-child(3) { left: 2vw; top: 97vh; animation-delay: 1s; }
-.glimmer-stars span:nth-child(4) { left: 97vw; top: 97vh; animation-delay: 1.5s; }
-/* Top and bottom edges */
-.glimmer-stars span:nth-child(7) { left: 60vw; top: 8vh; animation-delay: 1.2s; }
-.glimmer-stars span:nth-child(8) { left: 80vw; top: 3vh; animation-delay: 1.7s; }
-.glimmer-stars span:nth-child(11) { left: 60vw; top: 98vh; animation-delay: 1.4s; }
-.glimmer-stars span:nth-child(12) { left: 80vw; top: 98vh; animation-delay: 1.9s; }
-/* Left and right edges */
-.glimmer-stars span:nth-child(13) { left: 24vw; top: 20vh; animation-delay: 0.3s; }
-.glimmer-stars span:nth-child(14) { left: 20vw; top: 40vh; animation-delay: 0.8s; }
-.glimmer-stars span:nth-child(15) { left: 30vw; top: 60vh; animation-delay: 1.3s; }
-.glimmer-stars span:nth-child(17) { left: 85vw; top: 20vh; animation-delay: 0.6s; }
-.glimmer-stars span:nth-child(18) { left: 88vw; top: 40vh; animation-delay: 1.1s; }
-.glimmer-stars span:nth-child(20) { left: 93vw; top: 80vh; animation-delay: 2.1s; }
-
-@keyframes glimmer {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
-}
-</style>
-<div class="glimmer-stars">
-  <span>★</span><span>★</span><span>★</span><span>★</span>
-  <span>★</span><span>★</span><span>★</span><span>★</span>
-  <span>★</span><span>★</span><span>★</span><span>★</span>
-  <span>★</span><span>★</span><span>★</span><span>★</span>
-  <span>★</span><span>★</span><span>★</span><span>★</span>
-</div>
-""", unsafe_allow_html=True)
-
 # --- Display Invitation Details ---
 
 st.markdown(f'<h1>{t["title"]}</h1>', unsafe_allow_html=True)
 
-st.markdown("""
-<div class='glow-block'>
-    <p>{intro1}</p>
-    <p>{intro2}</p>
-    <h2>{intro3}</h2>
+st.markdown(f""" <div class='glow-block'>
+    <p> {t['intro1']} </p>
+    <p> {t['intro2']} </p>
+    <h2> {t['intro3']} <span style="color:white"> {t['bo']} </span> {t['intro4']} <span style="color:white"> {t['ali']} </span> </h2>
 </div>
-""".format(intro1=t['intro1'], intro2=t['intro2'], intro3=t['intro3']), unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
-st.markdown("""
-<div class='glow-block'>
-    <p>{address_intro}</p>
-    <p>{address}</p>
-    <p>{time_intro}</p>
-    <p>{date} | {time}</p>
-</div>
-""".format(address_intro=t['address_intro'], address=t['address'], time_intro=t['time_intro'], date=t['date'], time=t['time']), unsafe_allow_html=True)
+st.markdown(f""" <div class='glow-block'>
+    <p>{t['address_intro']}</p>
+    <p>{t['address']}</p>
+    <p>{t['time_intro']}</p>
+    <p>{t['date']} | {t['time']}</p>
+</div> """, unsafe_allow_html=True)
 
-st.markdown("""
-<div class='glow-block'>
-    <p>{dresscode_intro}</p>
-    <p>{dresscode_dark}</p>
-    <p>{dresscode_light}</p>
-    <p>{dresscode_last}</p>
-</div>
-""".format(dresscode_intro=t['dresscode_intro'], dresscode_dark=t['dresscode_dark'], dresscode_light=t['dresscode_light'], dresscode_last=t['dresscode_last']), unsafe_allow_html=True)
+st.markdown(f""" <div class='glow-block'>
+    <p>{t['dresscode_intro']}</p>
+    <p>{t['dresscode']}</p>
+</div> """, unsafe_allow_html=True)
 
 st.write("")  # Spacer
 
-# --- RSVP Form ---
+# --- RSVP Form --- (complete fail)
 st.header(t["rsvp_intro"])
 
 if "form_submitted" not in st.session_state:
@@ -408,57 +370,45 @@ if "form_submitted" not in st.session_state:
 if st.session_state.form_submitted:
     st.success(t["thank_you"])
 else:
-    with st.form(key="rsvp_form"):
-        st.write("Дорогие гости, подтверждаете присутствие?")
-        
-        # Create three columns for the checkboxes
-        col1, col2, col3 = st.columns(3)
-        
-        with col1:
-            yes_1 = st.checkbox("Да, 1", key="yes_1")
-        with col2:
-            yes_2 = st.checkbox("Да, 2", key="yes_2")
-        with col3:
-            no = st.checkbox("Нет", key="no")
+    with st.markdown("""<div class="glow-block">""", unsafe_allow_html=True):
+        with st.form(key="rsvp_form"):
+            attendance = st.radio(
+                label=t['rsvp_question'],
+                options=[t['rsvp_yes_1'], t['rsvp_yes_2'], t['rsvp_no']],
+                index=None,
+                key="attendance_radio")
+            submitted = st.form_submit_button(label=t["submit_button"])
+            if submitted:
+                if attendance is not None:
+                    guest_name = "Anonymous"
+                    try:
+                        response_data = pd.DataFrame([{
+                            "Name": guest_name,
+                            "Attendance": attendance,
+                            "Timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}])
+                        if not os.path.exists(RSVP_FILE):
+                            pd.DataFrame(columns=["Name", "Attendance", "Timestamp"]).to_csv(RSVP_FILE, index=False)
+                        response_data.to_csv(RSVP_FILE, mode="a", header=False, index=False)
+                        st.session_state.form_submitted = True
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"Произошла ошибка: {e}")
+                        st.exception(e)
+                else:
+                    st.warning("Пожалуйста, выберите один из вариантов")
 
-        submitted = st.form_submit_button(label=t["submit_button"])
 
-        if submitted:
-            # Determine attendance based on which box is checked
-            attendance = "Нет"
-            if yes_1:
-                attendance = "Да, 1"
-            elif yes_2:
-                attendance = "Да, 2"
-            elif no:
-                attendance = "Нет"
-            
-            # You can have a default name or leave it empty
-            guest_name = "Anonymous" 
+    st.markdown("</div>", unsafe_allow_html=True)
 
-            try:
-                response_data = pd.DataFrame([{
-                    "Name": guest_name,
-                    "Attendance": attendance,
-                    "Timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                }])
-
-                if not os.path.exists(RSVP_FILE):
-                    pd.DataFrame(columns=["Name", "Attendance", "Timestamp"]).to_csv(RSVP_FILE, index=False)
-
-                response_data.to_csv(RSVP_FILE, mode="a", header=False, index=False)
-
-                st.session_state.form_submitted = True
-                st.rerun()
-
-            except Exception as e:
-                st.error(f"Произошла ошибка: {e}")
-                st.exception(e)
-
-# --- Countdown & Final Message ---
 st.write("")
-st.subheader(f"⏳ {t['countdown_text']}")
-st.markdown(f"<h2 style='color:#FFD700'>{get_countdown(wedding_date, t)}</h2>", unsafe_allow_html=True)
-st.write("")
-st.markdown(f"<h3>{t['final_message']}</h3>", unsafe_allow_html=True)
-st.markdown(f"<h3><b>{t['farewell']}</b></h3>", unsafe_allow_html=True)
+
+st.markdown(f""" <div class='glow-block'>
+    <h3>{t['countdown_text']}</h3>
+    <h3>{get_countdown(wedding_date, t)}</h3>
+</div> """, unsafe_allow_html=True)
+
+st.markdown(f""" <div class='glow-block'>
+    <h3>{t['final_message']}
+    <h3>{t['farewell']}</h3>
+    <h2> <span style="color:white"> {t['farewell_names']} </span> </h2>
+</div> """, unsafe_allow_html=True)
