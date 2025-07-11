@@ -1,0 +1,19 @@
+# macOS specific files
+.DS_Store
+._*
+**/.DS_Store
+**/._*
+
+# JetBrains IDEs
+.idea/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Python virtual environment
+venv/
+*.pyc
+__pycache__/
+
+# VSCode
+.vscode/

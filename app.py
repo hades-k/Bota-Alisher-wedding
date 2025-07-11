@@ -1,18 +1,64 @@
 import streamlit as st
 import pandas as pd
-import os
 import base64
 import datetime
+import gspread
+from google.oauth2.service_account import Credentials
 
 # --- Page Configuration ---
 st.set_page_config(
     page_title="Бота & Алишер",
     page_icon="💍",
-    layout="centered" 
+    layout="centered"
 )
 
-# --- File for RSVPs ---
-RSVP_FILE = "rsvps.csv"
+# --- Google Sheets Connection ---
+# Function to create a gspread client from Streamlit secrets
+def get_gspread_client():
+    creds_dict = {
+        "type": st.secrets["type"],
+        "project_id": st.secrets["project_id"],
+        "private_key_id": st.secrets["private_key_id"],
+        "private_key": st.secrets["private_key"],
+        "client_email": st.secrets["client_email"],
+        "client_id": st.secrets["client_id"],
+        "auth_uri": st.secrets["auth_uri"],
+        "token_uri": st.secrets["token_uri"],
+        "auth_provider_x509_cert_url": st.secrets["auth_provider_x509_cert_url"],
+        "client_x509_cert_url": st.secrets["client_x509_cert_url"],
+    }
+    credentials = Credentials.from_service_account_info(
+        creds_dict,
+        scopes=["https://www.googleapis.com/auth/spreadsheets"],
+    )
+    return gspread.authorize(credentials)
+
+# Function to verify the code and get guest data
+def verify_code(code):
+    try:
+        client = get_gspread_client()
+        spreadsheet = client.open_by_url(st.secrets["gcp_spreadsheet_url"])
+        sheet = spreadsheet.worksheet("guests")
+
+        cell = sheet.find(code)
+        if cell:
+            row_values = sheet.row_values(cell.row)
+            guest_data = {
+                "row_index": cell.row,
+                "code": row_values[0],
+                "name": row_values[1],
+                "status": row_values[2],
+                "guest_count": int(row_values[3]) if len(row_values) > 3 and row_values[3].isdigit() else 0,
+            }
+            return guest_data
+        else:
+            return None
+    except gspread.exceptions.SpreadsheetNotFound:
+        st.error("Spreadsheet not found. Check the URL in your secrets.")
+        return None
+    except Exception as e:
+        st.error(f"An error occurred while accessing the spreadsheet: {e}")
+        return None
 
 # --- Function to get base64 encoded image for CSS ---
 def get_base64_of_bin_file(bin_file):
@@ -28,9 +74,9 @@ def load_css():
     encoded_image = get_base64_of_bin_file("background-1.png")
     st.markdown(f"""
     <style>
-    
+
         @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
-        
+
     /* Background and layout */
     .stApp {{
         background-image: url("data:image/png;base64,{encoded_image}");
@@ -42,24 +88,14 @@ def load_css():
         font-family: 'Inter', sans-serif;
         text-align: center;
     }}
-    
+
     .stApp > * {{
         position: relative;
         z-index: 1;
     }}
 
-    .stApp > header {{ 
-        background-color: transparent; 
-    }}
-
-    /* Main content block */
-    .main .block-container {{
-        background-color: rgba(0, 0, 0, 0.85);
-        border: 2px solid #FFD700;
-        box-shadow: 0 0 30px 10px #FFD700;
-        padding: 2rem;
-        border-radius: 16px;
-        text-align: center;
+    .stApp > header {{
+        background-color: transparent;
     }}
 
     /* Typography */
@@ -92,9 +128,9 @@ def load_css():
     .main .block-container p {{
         color: #FFD700;
         text-shadow: 0 0 5px #000, 0 0 10px #000;
-        font-size: 1.3em; 
+        font-size: 1.3em;
     }}
-    
+
     p {{
         color: #FFD700;
         font-size: 1.2em !important;
@@ -138,12 +174,14 @@ def load_css():
         color: #FFD700;
         border: 1px solid #FFD700;
         border-radius: 5px;
+        text-align: center;
+        font-size: 1.5em;
     }}
 
     .stTextInput>div>div>input::placeholder {{
         color: #ccc;
     }}
-    
+
     .glow-block {{
         display: block;
         width: 720px;
@@ -155,22 +193,22 @@ def load_css():
         padding: 12px 25px 12px 25px;
         border: 2px solid #FFD700;
         text-align: center;
-    }}   
-    
+    }}
+
     .glow-block h1, .glow-block names, .glow-block p {{
         color: #FFD700 !important;
         text-shadow: none !important;
         font-family: 'Russo One', sans-serif !important;
         margin: 0 0 8px 0;
     }}
-    
+
     .stCheckbox > div > label {{
     color: #FFD700 !important;
     text-shadow: 1px 1px 2px #000 !important;
     font-size: 1.1em;
     font-weight: 500;
     }}
-    
+
     </style>
     """, unsafe_allow_html=True)
 
@@ -249,7 +287,6 @@ content = {
 
 # --- Landing Page Logic ---
 def show_landing_page():
-    # Use background.png as background
     encoded_bg = get_base64_of_bin_file("background.png")
     st.markdown(f"""
     <style>
@@ -261,7 +298,7 @@ def show_landing_page():
         background-position: center;
         z-index: 0;
     }}
-    .center-btn {{
+    .center-content {{
         position: fixed;
         top: 50%;
         left: 50%;
@@ -271,6 +308,12 @@ def show_landing_page():
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        width: 350px;
+        padding: 20px;
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 10px;
+        border: 1px solid #FFD700;
+        box-shadow: 0 0 15px #FFD700;
     }}
     .landing-btn-container button {{
         background: #FFD700;
@@ -283,6 +326,7 @@ def show_landing_page():
         box-shadow: 0 0 10px #FFD700;
         cursor: pointer;
         transition: all 0.2s;
+        width: 100%;
     }}
     .landing-btn-container button:hover {{
         background: #000;
@@ -291,24 +335,40 @@ def show_landing_page():
     }}
     </style>
     <div class="landing-bg"></div>
-    <div class="center-btn">
-        <div class="landing-btn-container" id="landing-btn-anchor"></div>
-    </div>
     """, unsafe_allow_html=True)
-    # Place the button using Streamlit (centered)
-    st.markdown("<div style='height: 120px'></div>", unsafe_allow_html=True)  # Spacer for Streamlit layout
-    btn_placeholder = st.empty()
-    with btn_placeholder.container():
-        btn_clicked = st.button("Продолжить / Continue", key="continue_btn", help="Открыть приглашение")
-    if btn_clicked:
-        st.session_state.landing_done = True
-        st.rerun()
+
+    with st.container():
+        st.markdown("<div class='center-content'>", unsafe_allow_html=True)
+        with st.form("login_form"):
+            code = st.text_input(
+                "Пожалуйста, введите ваш 4-значный код / Please enter your 4-digit code",
+                max_chars=4,
+                key="code_input",
+                placeholder="****"
+            )
+            submitted = st.form_submit_button("Продолжить / Continue")
+
+            if submitted:
+                if code and code.isdigit() and len(code) == 4:
+                    guest_data = verify_code(code)
+                    if guest_data:
+                        st.session_state.landing_done = True
+                        st.session_state.guest_info = guest_data
+                        st.rerun()
+                    else:
+                        st.error("Код не найден / Code not found")
+                else:
+                    st.warning("Пожалуйста, введите 4-значный код / Please enter a 4-digit code")
+        st.markdown("</div>", unsafe_allow_html=True)
+
 
 # --- Main App Routing ---
 if "landing_done" not in st.session_state:
     st.session_state.landing_done = False
+if "guest_info" not in st.session_state:
+    st.session_state.guest_info = None
 
-if not st.session_state.landing_done:
+if not st.session_state.landing_done or not st.session_state.guest_info:
     show_landing_page()
     st.stop()
 
@@ -344,61 +404,76 @@ st.markdown(f""" <div class='glow-block'>
     <p> {t['intro1']} </p>
     <p> {t['intro2']} </p>
     <h2> {t['intro3']} <span style="color:white"> {t['bo']} </span> {t['intro4']} <span style="color:white"> {t['ali']} </span> </h2>
-</div>
-""", unsafe_allow_html=True)
-
-st.markdown(f""" <div class='glow-block'>
+    <br>
     <p>{t['address_intro']}</p>
     <p>{t['address']}</p>
     <p>{t['time_intro']}</p>
     <p>{t['date']} | {t['time']}</p>
-</div> """, unsafe_allow_html=True)
-
-st.markdown(f""" <div class='glow-block'>
+    <br>
     <p>{t['dresscode_intro']}</p>
     <p>{t['dresscode']}</p>
-</div> """, unsafe_allow_html=True)
+</div>""", unsafe_allow_html=True)
 
 st.write("")  # Spacer
 
-# --- RSVP Form --- (complete fail)
+# --- Function to update RSVP in Google Sheet ---
+def update_rsvp(row_index, status, guest_count):
+    try:
+        client = get_gspread_client()
+        spreadsheet = client.open_by_url(st.secrets["gcp_spreadsheet_url"])
+        sheet = spreadsheet.worksheet("guests")
+
+        # gspread columns are 1-indexed. Update STATUS in col 3, GUEST_COUNT in col 4.
+        sheet.update_cell(row_index, 3, status)
+        sheet.update_cell(row_index, 4, str(guest_count))
+
+        # Update session state to reflect the change immediately
+        st.session_state.guest_info['status'] = status
+        st.session_state.guest_info['guest_count'] = guest_count
+        return True
+    except Exception as e:
+        st.error(f"Произошла ошибка при обновлении: {e}")
+        return False
+
+# --- RSVP Form ---
 st.header(t["rsvp_intro"])
 
-if "form_submitted" not in st.session_state:
-    st.session_state.form_submitted = False
+guest_info = st.session_state.guest_info
 
-if st.session_state.form_submitted:
+# Check if the guest has already responded
+if guest_info and guest_info['status'] in ['Yes', 'No']:
     st.success(t["thank_you"])
 else:
-    with st.markdown("""<div class="glow-block">""", unsafe_allow_html=True):
-        with st.form(key="rsvp_form"):
-            attendance = st.radio(
-                label=t['rsvp_question'],
-                options=[t['rsvp_yes_1'], t['rsvp_yes_2'], t['rsvp_no']],
-                index=None,
-                key="attendance_radio")
-            submitted = st.form_submit_button(label=t["submit_button"])
-            if submitted:
-                if attendance is not None:
-                    guest_name = "Anonymous"
-                    try:
-                        response_data = pd.DataFrame([{
-                            "Name": guest_name,
-                            "Attendance": attendance,
-                            "Timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}])
-                        if not os.path.exists(RSVP_FILE):
-                            pd.DataFrame(columns=["Name", "Attendance", "Timestamp"]).to_csv(RSVP_FILE, index=False)
-                        response_data.to_csv(RSVP_FILE, mode="a", header=False, index=False)
-                        st.session_state.form_submitted = True
-                        st.rerun()
-                    except Exception as e:
-                        st.error(f"Произошла ошибка: {e}")
-                        st.exception(e)
+    # Personalize the question for the logged-in guest
+    rsvp_question = f"{guest_info['name']}, {t['rsvp_question'][0].lower()}{t['rsvp_question'][1:]}"
+
+    with st.form(key="rsvp_form"):
+        attendance = st.radio(
+            label=rsvp_question,
+            options=[t['rsvp_yes_1'], t['rsvp_yes_2'], t['rsvp_no']],
+            index=None,
+            key="attendance_radio")
+        submitted = st.form_submit_button(label=t["submit_button"])
+        if submitted:
+            if attendance is not None:
+                new_status = ""
+                new_guest_count = 0
+                if attendance == t['rsvp_yes_1']:
+                    new_status = "Yes"
+                    new_guest_count = 1
+                elif attendance == t['rsvp_yes_2']:
+                    new_status = "Yes"
+                    new_guest_count = 2
+                elif attendance == t['rsvp_no']:
+                    new_status = "No"
+                    new_guest_count = 0
+
+                if update_rsvp(guest_info['row_index'], new_status, new_guest_count):
+                    st.rerun()
                 else:
                     st.warning("Пожалуйста, выберите один из вариантов")
 
 
-    st.markdown("</div>", unsafe_allow_html=True)
 
 st.write("")
 
