@@ -232,22 +232,22 @@ content = {
         'invite': 'Приглашаем вас стать частью этого межгалактического события.',
         'final_message': 'Да пребудет с вами любовь. И хорошее настроение.',
         'farewell': 'С нетерпением ждём встречи,',
-        'farewell_names': 'Нурлан и Сауле',
+        'farewell_names': 'Нурлан - Сауле',
         'date': "6 сентября 2025 года",
         'time': '17:00',
         'time_intro': '🕔 Время прибытия',
-        "rsvp_intro": "Подтвердите свое присутствие до 20 августа (еще не работает)",
+        "rsvp_intro": "Подтвердите свое присутствие до 20 августа",
         "submit_button": "Отправить ответ",
         "thank_you": "Спасибо! Ваш ответ записан в голокрон.",
         "countdown_text": "⏳До нашего мероприятия осталось:",
         "days": "дней",
         "hours": "часов",
         "minutes": "минут",
-        "wedding_started": "Праздник началась!",
-        "rsvp_question": "Дорогие гости, подтверждаете присутствие?",
-        "rsvp_yes_1": "Да, 1",
-        "rsvp_yes_2": "Да, 2",
-        "rsvp_no": "Нет",
+        "wedding_started": "Праздник начался!",
+        "rsvp_question": "подтверждаете присутствие?",
+        "rsvp_yes_1": "Да, я приду один(а)",
+        "rsvp_yes_2": "Да, мы придем вдвоем",
+        "rsvp_no": "Нет, я не смогу присутствовать",
     },
 
     "kz": {
@@ -270,7 +270,7 @@ content = {
         'date': "2025 ж. 6 қыркүйек",
         'time': 'сағат 17:00',
         'time_intro': '🕔 Келу уақыты:',
-        "rsvp_intro": "Қатысуыңызды 20 тамызға дейін растаңыз (әлі жұмыс істемейді)",
+        "rsvp_intro": "Қатысуыңызды 20 тамызға дейін растаңыз",
         "submit_button": "Жауапты жіберу",
         "thank_you": "Рахмет! Сіздің жауабыңыз голокронға жазылды.",
         "countdown_text": "⏳Тойымызға қалды:",
@@ -278,18 +278,19 @@ content = {
         "hours": "сағат",
         "minutes": "минут",
         "wedding_started": "Мереке басталды!",
-        "rsvp_question": "Құрметті қонақтар, қатысатыныңызды растайсыз ба?",
-        "rsvp_yes_1": "Иә, 1",
-        "rsvp_yes_2": "Иә, 2",
-        "rsvp_no": "Жоқ",
+        "rsvp_question": "қатысатыныңызды растайсыз ба?",
+        "rsvp_yes_1": "Иә, мен жалғыз келемін",
+        "rsvp_yes_2": "Иә, біз екеуміз келеміз",
+        "rsvp_no": "Жоқ, келе алмаймын"
     }
 }
 
 # --- Landing Page Logic ---
 def show_landing_page():
-    encoded_bg = get_base64_of_bin_file("background.png")
+    encoded_bg = get_base64_of_bin_file("background-1.png")
     st.markdown(f"""
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
     .landing-bg {{
         position: fixed;
         top: 0; left: 0; width: 100vw; height: 100vh;
@@ -298,68 +299,123 @@ def show_landing_page():
         background-position: center;
         z-index: 0;
     }}
-    .center-content {{
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+    .top-landing-content {{
+        position: relative;
         z-index: 2;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        width: 350px;
-        padding: 20px;
-        background-color: rgba(0, 0, 0, 0.7);
-        border-radius: 10px;
-        border: 1px solid #FFD700;
-        box-shadow: 0 0 15px #FFD700;
+        justify-content: flex-start;
+        width: 100%;
+        max-width: 600px;
+        margin: 2.5em auto 0 auto;
+        box-sizing: border-box;
+        padding: 0 1.5em;
     }}
-    .landing-btn-container button {{
+    .landing-title {{
+        font-family: 'Russo One', sans-serif;
+        color: #FFD700;
+        font-size: 3em;
+        text-shadow: 0 2px 16px #000, 0 0 8px #FFD700;
+        letter-spacing: 0.08em;
+        margin-bottom: 1.2em;
+        text-align: center;
+        word-break: break-word;
+        line-height: 1.1;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }}
+    .landing-instructions {{
+        font-family: 'Russo One', sans-serif;
+        color: #FFD700;
+        font-size: 1.3em;
+        text-shadow: 0 2px 8px #000, 0 0 4px #FFD700;
+        margin-bottom: 2em;
+        text-align: center;
+        word-break: break-word;
+        line-height: 1.2;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }}
+    .landing-form-wrapper {{
+        width: 100%;
+        max-width: 340px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-sizing: border-box;
+    }}
+    .stTextInput>div>div>input {{
+        text-align: center;
+        font-size: 2em;
+        letter-spacing: 0.3em;
+        background: rgba(255,255,255,0.85);
+        border-radius: 8px;
+        border: 2px solid #FFD700;
+        color: #000;
+        font-weight: bold;
+        font-family: 'Russo One', sans-serif;
+        width: 100%;
+        box-sizing: border-box;
+    }}
+    .stTextInput>div>div>input::placeholder {{
+        color: #FFD700;
+        opacity: 0.7;
+        font-family: 'Russo One', sans-serif;
+    }}
+    .stButton>button {{
+        width: 100%;
+        font-size: 1.3em;
+        margin-top: 1.2em;
         background: #FFD700;
         color: #000;
         border: 2px solid #FFD700;
         border-radius: 6px;
         font-weight: bold;
-        font-size: 1.1em;
-        padding: 10px 32px;
         box-shadow: 0 0 10px #FFD700;
-        cursor: pointer;
         transition: all 0.2s;
-        width: 100%;
+        font-family: 'Russo One', sans-serif;
+        box-sizing: border-box;
     }}
-    .landing-btn-container button:hover {{
+    .stButton>button:hover {{
         background: #000;
         color: #FFD700;
         box-shadow: 0 0 20px #FFD700;
     }}
     </style>
     <div class="landing-bg"></div>
+    <div class="top-landing-content">
+        <div class="landing-title">Qyz Uzatu</div>
+        <div class="landing-instructions">
+            Пожалуйста, введите ваш 4-значный код<br>Сіздің 4 таңбалы кодты енгізіңіз
+        </div>
+        <div class="landing-form-wrapper">
     """, unsafe_allow_html=True)
 
-    with st.container():
-        st.markdown("<div class='center-content'>", unsafe_allow_html=True)
-        with st.form("login_form"):
-            code = st.text_input(
-                "Пожалуйста, введите ваш 4-значный код / Please enter your 4-digit code",
-                max_chars=4,
-                key="code_input",
-                placeholder="****"
-            )
-            submitted = st.form_submit_button("Продолжить / Continue")
+    with st.form("login_form"):
+        code = st.text_input(
+            "",
+            max_chars=4,
+            key="code_input",
+            placeholder="****"
+        )
+        submitted = st.form_submit_button("Продолжить / Жалғастыру")
 
-            if submitted:
-                if code and code.isdigit() and len(code) == 4:
-                    guest_data = verify_code(code)
-                    if guest_data:
-                        st.session_state.landing_done = True
-                        st.session_state.guest_info = guest_data
-                        st.rerun()
-                    else:
-                        st.error("Код не найден / Code not found")
+        if submitted:
+            if code and code.isdigit() and len(code) == 4:
+                guest_data = verify_code(code)
+                if guest_data:
+                    st.session_state.landing_done = True
+                    st.session_state.guest_info = guest_data
+                    st.rerun()
                 else:
-                    st.warning("Пожалуйста, введите 4-значный код / Please enter a 4-digit code")
-        st.markdown("</div>", unsafe_allow_html=True)
+                    st.error("Код не найден / Код табылмады")
+            else:
+                st.warning("Пожалуйста, введите 4-значный код / 4 таңбалы кодты енгізіңіз")
+    st.markdown("</div></div>", unsafe_allow_html=True)
 
 
 # --- Main App Routing ---
@@ -388,7 +444,7 @@ def get_countdown(wedding_date, lang_content):
         hours = time_left.seconds // 3600
         minutes = (time_left.seconds % 3600) // 60
         seconds = time_left.seconds % 60
-        return f"{days} {lang_content["days"]}, {hours} {lang_content["hours"]}, {minutes} {lang_content["minutes"]}"
+        return f"{days} {lang_content['days']}, {hours} {lang_content['hours']}, {minutes} {lang_content['minutes']}"
 
 # Language Selection
 lang_choice = st.sidebar.radio("Language / Тіл", ["Русский", "Қазақ"], label_visibility="collapsed")
@@ -404,9 +460,12 @@ st.markdown(f""" <div class='glow-block'>
     <p> {t['intro1']} </p>
     <p> {t['intro2']} </p>
     <h2> {t['intro3']} <span style="color:white"> {t['bo']} </span> {t['intro4']} <span style="color:white"> {t['ali']} </span> </h2>
-    <br>
+</div>""", unsafe_allow_html=True)
+
+st.markdown(f""" <div class='glow-block'>
     <p>{t['address_intro']}</p>
     <p>{t['address']}</p>
+    <br>
     <p>{t['time_intro']}</p>
     <p>{t['date']} | {t['time']}</p>
     <br>
@@ -471,7 +530,7 @@ else:
                 if update_rsvp(guest_info['row_index'], new_status, new_guest_count):
                     st.rerun()
                 else:
-                    st.warning("Пожалуйста, выберите один из вариантов")
+                    st.warning("Пожалуйста, выберите один из вариантов / Опциялардың бірін таңдаңыз")
 
 
 
