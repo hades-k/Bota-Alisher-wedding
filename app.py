@@ -80,13 +80,14 @@ def load_css():
     /* Background and layout */
     .stApp {{
         background-image: url("data:image/png;base64,{encoded_image}");
+        background-repeat: no-repeat;
         background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        position: relative;
-        overflow: hidden;
+        background-position: center center;
+        background-attachment: scroll;
         font-family: 'Inter', sans-serif;
         text-align: center;
+        position: relative;
+        overflow-x: hidden;
     }}
 
     .stApp > * {{
@@ -103,7 +104,7 @@ def load_css():
         color: #FFD700 !important;
         text-shadow: 0 0 8px #000, 0 0 16px #000;
         font-weight: 800;
-        font-size: 2.3em;
+        font-size: 2.2em;
         margin-top: 24px;
         letter-spacing: 0.04em;
         font-family: 'Russo One', sans-serif !important;
@@ -113,14 +114,14 @@ def load_css():
         color: #FFD700 !important;
         text-shadow: 0 0 5px #000, 0 0 10px #000;
         font-weight: 500;
-        font-size: 1.75em;
+        font-size: 1.6em;
         font-family: 'Russo One', sans-serif !important;
     }}
 
     h3, label, .st-emotion-cache-16txtl3 {{
         color: #FFD700 !important;
         text-shadow: 0 0 5px #000, 0 0 10px #000;
-        font-size: 1.1em;
+        font-size: 1.4em !important;
         font-family: 'Russo One', sans-serif !important;
     }}
 
@@ -128,12 +129,12 @@ def load_css():
     .main .block-container p {{
         color: #FFD700;
         text-shadow: 0 0 5px #000, 0 0 10px #000;
-        font-size: 1.3em;
+        font-size: 1.2em;
     }}
 
     p {{
         color: #FFD700;
-        font-size: 1.2em !important;
+        font-size: 1.15em !important;
     }}
 
     /* Buttons */
@@ -183,16 +184,16 @@ def load_css():
     }}
 
     .glow-block {{
-        display: block;
-        width: 720px;
-        max-width: 95vw;
-        margin: 18px auto 18px auto;
-        background: rgba(0,0,0,0.75);
-        border-radius: 18px;
-        box-shadow: 0 0 18px 7px #FFD70099, 0 0 0 4px #FFD70044;
-        padding: 12px 25px 12px 25px;
-        border: 2px solid #FFD700;
-        text-align: center;
+    width: 100%;
+    max-width: 720px;
+    margin: 18px auto;
+    background: rgba(0,0,0,0.4);
+    border-radius: 18px;
+    box-shadow: 0 0 18px 7px #FFD70099, 0 0 0 4px #FFD70044;
+    padding: 12px 25px;
+    border: 2px solid #FFD700;
+    text-align: center;
+    box-sizing: border-box;
     }}
 
     .glow-block h1, .glow-block names, .glow-block p {{
