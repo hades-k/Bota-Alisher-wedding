@@ -76,7 +76,6 @@ Bota-Alisher-wedding/
   background.png
   envelope.png
   envelope-untrimmed.png
-  guests _tentative.csv
 ```
 
 ## Customization
