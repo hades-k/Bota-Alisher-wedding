@@ -462,7 +462,7 @@ t = content[lang]
 st.markdown(f'<h1>{t["title"]}</h1>', unsafe_allow_html=True)
 
 st.markdown(f""" <div class='glow-block'>
-    <h3> {t['subtitle']} </p>
+    <h3> {t['subtitle']} </h3>
     <p> {t['intro1']} </p>
     <p> {t['intro2']} </p>
     <h2> {t['intro3']} <span style="color:white"> {t['bo']} </span> {t['intro4']} <span style="color:white"> {t['ali']} </span> </h2>
