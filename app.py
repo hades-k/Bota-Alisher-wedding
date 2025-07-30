@@ -476,6 +476,7 @@ st.markdown(f""" <div class='glow-block'>
     <br>
     <p>{t['dresscode_intro']}</p>
     <p>{t['dresscode']}</p>
+    <br>
     <p>{t['no_kids']}</p>
 </div>""", unsafe_allow_html=True)
 
