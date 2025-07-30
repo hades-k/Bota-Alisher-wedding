@@ -237,7 +237,7 @@ content = {
         'farewell_names': 'Нурлан - Сауле',
         'date': "6 сентября 2025 года",
         'time': '17:00',
-        'time_intro': '🕔 Время прибытия',
+        'time_intro': '🕔 Время прибытия:',
         "rsvp_intro": "Подтвердите свое присутствие",
         "submit_button": "Отправить ответ",
         "thank_you": "Спасибо! Ваш ответ записан в голокрон.",
@@ -462,6 +462,7 @@ t = content[lang]
 st.markdown(f'<h1>{t["title"]}</h1>', unsafe_allow_html=True)
 
 st.markdown(f""" <div class='glow-block'>
+    <h3> {t['subtitle']} </p>
     <p> {t['intro1']} </p>
     <p> {t['intro2']} </p>
     <h2> {t['intro3']} <span style="color:white"> {t['bo']} </span> {t['intro4']} <span style="color:white"> {t['ali']} </span> </h2>
