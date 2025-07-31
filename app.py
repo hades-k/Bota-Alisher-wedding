@@ -4,6 +4,7 @@ import base64
 import datetime
 import gspread
 from google.oauth2.service_account import Credentials
+import time  # <-- Added for flash page
 
 # --- Page Configuration ---
 st.set_page_config(
@@ -415,6 +416,7 @@ def show_landing_page():
                 if guest_data:
                     st.session_state.landing_done = True
                     st.session_state.guest_info = guest_data
+                    st.session_state.show_flash = True  # <-- Show flash page
                     st.rerun()
                 else:
                     st.error("Код не найден / Код табылмады")
@@ -428,9 +430,49 @@ if "landing_done" not in st.session_state:
     st.session_state.landing_done = False
 if "guest_info" not in st.session_state:
     st.session_state.guest_info = None
+if "show_flash" not in st.session_state:
+    st.session_state.show_flash = False
 
 if not st.session_state.landing_done or not st.session_state.guest_info:
     show_landing_page()
+    st.stop()
+
+# --- Flash Guest Name Page ---
+if st.session_state.show_flash:
+    guest_name = st.session_state.guest_info["name"]
+    encoded_bg = get_base64_of_bin_file("background-1.png")
+    st.markdown(
+        f"""
+        <style>
+        .flash-bg {{
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: url('data:image/png;base64,{encoded_bg}');
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+        }}
+        .flash-content {{
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }}
+        </style>
+        <div class='flash-bg'></div>
+        <div class='flash-content'>
+            <span style='font-size:4em;font-weight:bold;color:#FFD700;text-shadow:0 0 20px #000;'>
+                Құрметті {guest_name}
+            </span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    time.sleep(2)  # Show for 2 seconds
+    st.session_state.show_flash = False
+    st.rerun()
     st.stop()
 
 # --- Main App Logic ---
@@ -513,7 +555,6 @@ if guest_info and guest_info['status'] in ['Yes', 'No']:
 else:
     # Personalize the question for the logged-in guest
     rsvp_question = f"{guest_info['name']}, {t['rsvp_question'][0].lower()}{t['rsvp_question'][1:]}"
-
     with st.form(key="rsvp_form"):
         attendance = st.radio(
             label=rsvp_question,
@@ -537,9 +578,8 @@ else:
 
                 if update_rsvp(guest_info['row_index'], new_status, new_guest_count):
                     st.rerun()
-                else:
-                    st.warning("Пожалуйста, выберите один из вариантов / Опциялардың бірін таңдаңыз")
-
+            else:
+                st.warning("Пожалуйста, выберите один из вариантов / Опциялардың бірін таңдаңыз")
 
 
 st.write("")
