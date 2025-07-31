@@ -70,6 +70,20 @@ def get_base64_of_bin_file(bin_file):
     except FileNotFoundError:
         return None
 
+# --- Background Music ---
+def add_background_music():
+    try:
+        music_data = get_base64_of_bin_file("music.m4a")
+        if music_data:
+            st.markdown(f"""
+            <audio autoplay loop style="display: none;">
+                <source src="data:audio/mp4;base64,{music_data}" type="audio/mp4">
+            </audio>
+            """, unsafe_allow_html=True)
+    except Exception as e:
+        # Silently fail if music file is not found or other issues
+        pass
+
 # --- Load Custom CSS for Star Wars Theme ---
 def load_css():
     encoded_image = get_base64_of_bin_file("background-1.png")
@@ -477,6 +491,7 @@ if st.session_state.show_flash:
 
 # --- Main App Logic ---
 load_css()
+add_background_music() # Call the new function here
 
 wedding_date = datetime.datetime(2025, 9, 6, 17, 0)
 
