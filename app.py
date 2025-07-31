@@ -70,39 +70,6 @@ def get_base64_of_bin_file(bin_file):
     except FileNotFoundError:
         return None
 
-# --- Background Music ---
-def add_background_music():
-    music_data = get_base64_of_bin_file("music.m4a")
-    if music_data:
-        st.markdown(f"""
-        <audio id="bg-music" loop autoplay style="display: none;">
-            <source src="data:audio/mp4;base64,{music_data}" type="audio/mp4">
-        </audio>
-
-        <script>
-        const audio = document.getElementById("bg-music");
-
-        // Try to autoplay immediately
-        audio.play().then(() => {{
-            console.log("Autoplay succeeded");
-        }}).catch(error => {{
-            console.log("Autoplay was prevented. Waiting for user interaction.");
-            
-            const startAudioOnInteraction = () => {{
-                audio.play();
-                document.removeEventListener('click', startAudioOnInteraction);
-                document.removeEventListener('touchstart', startAudioOnInteraction);
-                document.removeEventListener('keydown', startAudioOnInteraction);
-            }};
-
-            document.addEventListener('click', startAudioOnInteraction);
-            document.addEventListener('touchstart', startAudioOnInteraction);
-            document.addEventListener('keydown', startAudioOnInteraction);
-        }});
-        </script>
-        """, unsafe_allow_html=True)
-
-
 # --- Load Custom CSS for Star Wars Theme ---
 def load_css():
     encoded_image = get_base64_of_bin_file("background-1.png")
@@ -510,7 +477,6 @@ if st.session_state.show_flash:
 
 # --- Main App Logic ---
 load_css()
-add_background_music() # Call the new function here
 
 wedding_date = datetime.datetime(2025, 9, 6, 17, 0)
 
