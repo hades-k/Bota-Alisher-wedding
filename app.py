@@ -72,17 +72,36 @@ def get_base64_of_bin_file(bin_file):
 
 # --- Background Music ---
 def add_background_music():
-    try:
-        music_data = get_base64_of_bin_file("music.m4a")
-        if music_data:
-            st.markdown(f"""
-            <audio autoplay loop style="display: none;">
-                <source src="data:audio/mp4;base64,{music_data}" type="audio/mp4">
-            </audio>
-            """, unsafe_allow_html=True)
-    except Exception as e:
-        # Silently fail if music file is not found or other issues
-        pass
+    music_data = get_base64_of_bin_file("music.m4a")
+    if music_data:
+        st.markdown(f"""
+        <audio id="bg-music" loop autoplay style="display: none;">
+            <source src="data:audio/mp4;base64,{music_data}" type="audio/mp4">
+        </audio>
+
+        <script>
+        const audio = document.getElementById("bg-music");
+
+        // Try to autoplay immediately
+        audio.play().then(() => {{
+            console.log("Autoplay succeeded");
+        }}).catch(error => {{
+            console.log("Autoplay was prevented. Waiting for user interaction.");
+            
+            const startAudioOnInteraction = () => {{
+                audio.play();
+                document.removeEventListener('click', startAudioOnInteraction);
+                document.removeEventListener('touchstart', startAudioOnInteraction);
+                document.removeEventListener('keydown', startAudioOnInteraction);
+            }};
+
+            document.addEventListener('click', startAudioOnInteraction);
+            document.addEventListener('touchstart', startAudioOnInteraction);
+            document.addEventListener('keydown', startAudioOnInteraction);
+        }});
+        </script>
+        """, unsafe_allow_html=True)
+
 
 # --- Load Custom CSS for Star Wars Theme ---
 def load_css():
