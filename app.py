@@ -478,7 +478,7 @@ if st.session_state.show_flash:
 # --- Main App Logic ---
 load_css()
 
-wedding_date = datetime.datetime(2025, 9, 6, 17, 0)
+wedding_date = datetime.datetime(2025, 10, 11, 17, 0)
 
 def get_countdown(wedding_date, lang_content):
     now = datetime.datetime.now()
