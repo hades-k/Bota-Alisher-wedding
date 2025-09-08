@@ -1,5 +1,6 @@
-streamlit
-pandas
-gspread
-gspread-pandas
-oauth2client
+streamlit==1.36.0
+pandas==2.2.2
+gspread==6.0.0
+gspread-pandas==3.3.0
+oauth2client==4.1.3
+google-auth==2.35.0
