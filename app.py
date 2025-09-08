@@ -403,10 +403,11 @@ def show_landing_page():
 
     with st.form("login_form"):
         code = st.text_input(
-            "",
+            "Access code",
             max_chars=4,
             key="code_input",
-            placeholder="****"
+            placeholder="****",
+            label_visibility = 'collapsed'
         )
         submitted = st.form_submit_button("Продолжить / Жалғастыру")
 
